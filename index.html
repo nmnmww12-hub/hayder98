@@ -25,87 +25,91 @@ body {
   margin:10px;
   padding:15px;
   border-radius:10px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
   cursor:pointer;
 }
 
-.live {
-  color:red;
-  font-weight:bold;
-}
-
-.player {
-  width:100%;
-  height:220px;
-  margin-top:10px;
-}
-
-.nav {
-  position:fixed;
-  bottom:0;
-  width:100%;
-  background:#111;
-  display:flex;
-  justify-content:space-around;
+.servers button {
+  margin:5px;
   padding:10px;
-}
-
-.nav button {
-  background:none;
+  background:#1f4e79;
   border:none;
   color:white;
+  border-radius:5px;
 }
-</style>
 
+video {
+  width:100%;
+  height:220px;
+  background:black;
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="header">⚽ Football Live Pro</div>
 
-<div id="matches"></div>
+<div id="matches">
+
+<div class="match" onclick="openMatch('Real vs Barca')">
+🔥 ريال مدريد vs برشلونة
+</div>
+
+<div class="match" onclick="openMatch('City vs Liverpool')">
+🔥 مانشستر سيتي vs ليفربول
+</div>
+
+</div>
 
 <div id="player"></div>
-
-<div class="nav">
-  <button onclick="loadMatches()">⚽ مباريات</button>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
-async function loadMatches(){
-  document.getElementById("matches").innerHTML = "جاري تحميل المباريات...";
 
-  try {
-    let res = await fetch("https://www.scorebat.com/video-api/v3/");
-    let data = await res.json();
+function openMatch(name){
+  document.getElementById("player").innerHTML = `
+    <h3>${name}</h3>
 
-    let html = "";
+    <div class="servers">
+      <button onclick="playStream(1)">Server 1</button>
+      <button onclick="playStream(2)">Server 2</button>
+      <button onclick="playStream(3)">Server 3</button>
+    </div>
 
-    data.response.slice(0,10).forEach(match => {
-      html += `
-      <div class="match" onclick="playVideo(\`${match.videos[0].embed}\`)">
-        <span>${match.title}</span>
-        <span class="live">LIVE</span>
-      </div>
-      `;
-    });
+    <video id="video" controls autoplay></video>
+  `;
+}
 
-    document.getElementById("matches").innerHTML = html;
+function playStream(server){
 
-  } catch {
-    document.getElementById("matches").innerHTML = "❌ خطأ بالتحميل";
+  let url = "";
+
+  if(server == 1){
+    url = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
   }
+
+  if(server == 2){
+    url = "https://test-streams.mux.dev/test_001/stream.m3u8";
+  }
+
+  if(server == 3){
+    url = "https://test-streams.mux.dev/bbb-360p.m3u8";
+  }
+
+  var video = document.getElementById("video");
+
+  if(Hls.isSupported()){
+    var hls = new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+  } else {
+    video.src = url;
+  }
+
 }
 
-function playVideo(embed){
-  document.getElementById("player").innerHTML = embed;
-}
-
-loadMatches();
 </script>
 
 </body>
