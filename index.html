@@ -3,51 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مباريات اليوم - مباشر</title>
+    <title>Football Pro LIVE 2026</title>
     <style>
-        body {
-            background-color: #0b0e14; /* خلفية داكنة احترافية */
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-        }
-        .header {
-            text-align: center;
-            padding: 15px;
-            background: #1a1e26;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            font-weight: bold;
-        }
-        /* لضمان بقاء الإضافة داخل الصفحة بشكل مرتب */
-        .widget-wrapper {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            min-height: 600px; /* يحجز مساحة حتى لا تظهر الصفحة بيضاء */
-        }
+        :root { --bg: #0f172a; --card: #1e293b; --accent: #38bdf8; --text: #ffffff; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        .nav { background: #000; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; border-bottom: 2px solid var(--accent); }
+        .section-title { padding: 15px; background: var(--card); margin: 10px 0; border-right: 5px solid var(--accent); font-size: 18px; }
+        .container { padding: 10px; max-width: 1000px; margin: 0 auto; }
+        iframe { width: 100%; border: none; border-radius: 8px; background: var(--card); }
+        .video-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
     </style>
 </head>
 <body>
 
-    <div class="header">⚽ جدول مباريات اليوم المباشر</div>
+<div class="nav">FOOTBALL PRO LIVE ⚽</div>
 
-    <div class="widget-wrapper">
-        <div id="sa-widget-matches" class="scoreaxis-widget"></div>
-        <script>
-            (function() {
-                var script = document.createElement('script');
-                script.src = "https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=sa-widget-matches&lang=ar&font=heebo&fontSize=14&bodyColor=%231a1e26&textColor=%23ffffff&linkColor=%2338bdf8&borderColor=%23334155&tabColor=%230b0e14&rowDensity=100&links=0"; // تم تعطيل الروابط الخارجية بـ links=0
-                script.async = true;
-                document.getElementById('sa-widget-matches').appendChild(script);
-            })();
-        </script>
+<div class="container">
+    
+    <div class="section-title">📅 مباريات اليوم مباشر</div>
+    <div id="wg-matches" style="min-height: 400px;">
+        <script src="https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=wg-matches&lang=ar&bodyColor=%231e293b&textColor=%23ffffff&linkColor=%2338bdf8&links=0" async></script>
     </div>
 
-    <div style="text-align:center; font-size:11px; margin-top:20px; color:#555;">
-        تحديث تلقائي للمباريات والنتائج
+    <div class="section-title">🏆 ترتيب الدوري الإسباني (مارس 2026)</div>
+    <div id="wg-standings">
+        <script src="https://widgets.scoreaxis.com/api/football/standings/538?widgetId=wg-standings&lang=ar&bodyColor=%231e293b&textColor=%23ffffff" async></script>
     </div>
+
+    <div class="section-title">📺 ملخصات ريال مدريد - دوري الأبطال</div>
+    <div class="video-grid">
+        <iframe height="250" src="https://www.youtube.com/embed/uvghsXibCvo" title="Real Madrid Highlights"></iframe>
+        <p style="font-size: 12px; color: #94a3b8; text-align: center;">فوز ريال مدريد 2-1 على بنفيكا وتأهله لدور الـ 16</p>
+    </div>
+
+    <div class="section-title">📰 أحدث أخبار الانتقالات</div>
+    <div style="background: var(--card); padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6;">
+        <ul style="list-style: none; padding: 0;">
+            <li>🔥 <b>كايسيدو:</b> يجدد التزام مع تشيلسي رغم اهتمام ريال مدريد (مارس 2026).</li>
+            <li>🔄 <b>برشلونة:</b> يفكر في تفعيل بند شراء راشفورد المعار حالياً لديهم.</li>
+            <li>⭐ <b>ليفربول:</b> يراقب "يان ديوماندي" ليكون بديلاً لمحمد صلاح الصيف القادم.</li>
+        </ul>
+    </div>
+
+</div>
+
+<footer style="text-align: center; padding: 30px; color: #475569; font-size: 12px;">
+    تحديثات مارس 2026 - جميع الحقوق محفوظة لموقعك
+</footer>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Pro LIVE 2026</title>
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --accent: #38bdf8; --text: #ffffff; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        .nav { background: #000; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; border-bottom: 2px solid var(--accent); }
+        .section-title { padding: 15px; background: var(--card); margin: 10px 0; border-right: 5px solid var(--accent); font-size: 18px; }
+        .container { padding: 10px; max-width: 1000px; margin: 0 auto; }
+        iframe { width: 100%; border: none; border-radius: 8px; background: var(--card); }
+        .video-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="nav">FOOTBALL PRO LIVE ⚽</div>
+
+<div class="container">
+    
+    <div class="section-title">📅 مباريات اليوم مباشر</div>
+    <div id="wg-matches" style="min-height: 400px;">
+        <script src="https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=wg-matches&lang=ar&bodyColor=%231e293b&textColor=%23ffffff&linkColor=%2338bdf8&links=0" async></script>
+    </div>
+
+    <div class="section-title">🏆 ترتيب الدوري الإسباني (مارس 2026)</div>
+    <div id="wg-standings">
+        <script src="https://widgets.scoreaxis.com/api/football/standings/538?widgetId=wg-standings&lang=ar&bodyColor=%231e293b&textColor=%23ffffff" async></script>
+    </div>
+
+    <div class="section-title">📺 ملخصات ريال مدريد - دوري الأبطال</div>
+    <div class="video-grid">
+        <iframe height="250" src="https://www.youtube.com/embed/uvghsXibCvo" title="Real Madrid Highlights"></iframe>
+        <p style="font-size: 12px; color: #94a3b8; text-align: center;">فوز ريال مدريد 2-1 على بنفيكا وتأهله لدور الـ 16</p>
+    </div>
+
+    <div class="section-title">📰 أحدث أخبار الانتقالات</div>
+    <div style="background: var(--card); padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6;">
+        <ul style="list-style: none; padding: 0;">
+            <li>🔥 <b>كايسيدو:</b> يجدد التزام مع تشيلسي رغم اهتمام ريال مدريد (مارس 2026).</li>
+            <li>🔄 <b>برشلونة:</b> يفكر في تفعيل بند شراء راشفورد المعار حالياً لديهم.</li>
+            <li>⭐ <b>ليفربول:</b> يراقب "يان ديوماندي" ليكون بديلاً لمحمد صلاح الصيف القادم.</li>
+        </ul>
+    </div>
+
+</div>
+
+<footer style="text-align: center; padding: 30px; color: #475569; font-size: 12px;">
+    تحديثات مارس 2026 - جميع الحقوق محفوظة لموقعك
+</footer>
 
 </body>
 </html>
