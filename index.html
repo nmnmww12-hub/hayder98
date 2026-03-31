@@ -2,42 +2,57 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>Football 26</title>
+<title>Football Pro App</title>
 
 <style>
 body {
-    margin: 0;
+    margin:0;
     font-family: Arial;
-    background: black;
-    color: white;
-    text-align: center;
+    background:#0b1220;
+    color:white;
 }
 
 /* الصفحات */
 .page {
-    display: none;
-    padding: 20px;
+    display:none;
+    padding:15px;
 }
+
 .active {
-    display: block;
+    display:block;
 }
 
-/* القائمة السفلية */
+/* المباراة */
+.match {
+    background:#111827;
+    margin:10px 0;
+    padding:15px;
+    border-radius:15px;
+}
+
+/* الفرق */
+.teams {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* القائمة */
 .menu {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #111;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#111;
+    display:flex;
+    justify-content:space-around;
+    padding:10px;
 }
 
-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
+.menu button {
+    background:none;
+    border:none;
+    color:#aaa;
+    font-size:16px;
 }
 </style>
 
@@ -45,45 +60,36 @@ button {
 
 <body>
 
-<!-- الصفحات -->
-<div id="home" class="page active">
-    <h1>🏠 الرئيسية</h1>
-    <p>مرحبا بك في Football 26</p>
+<!-- صفحة المباريات -->
+<div id="matches" class="page active">
+<h2>⚽ المباريات</h2>
+<div id="matchesList">تحميل...</div>
 </div>
 
-<div id="matches" class="page">
-    <h1>⚽ المباريات</h1>
-    <p>لا توجد مباريات حالياً</p>
-</div>
-
-<div id="videos" class="page">
-    <h1>🎬 الفيديوهات</h1>
-    <p>قريباً...</p>
-</div>
-
+<!-- صفحة الأخبار -->
 <div id="news" class="page">
-    <h1>📰 الأخبار</h1>
-    <p>أخبار الكرة هنا</p>
+<h2>📰 الأخبار</h2>
+<p>قريباً...</p>
 </div>
 
+<!-- صفحة الانتقالات -->
 <div id="transfers" class="page">
-    <h1>💰 الانتقالات</h1>
-    <p>قريباً...</p>
+<h2>💰 الانتقالات</h2>
+<p>قريباً...</p>
 </div>
 
+<!-- صفحة التحليل -->
 <div id="analysis" class="page">
-    <h1>📊 التحليل</h1>
-    <p>تحليل المباريات</p>
+<h2>📊 التحليل</h2>
+<p>قريباً...</p>
 </div>
 
 <!-- القائمة -->
 <div class="menu">
-    <button onclick="showPage('home')">🏠</button>
-    <button onclick="showPage('matches')">⚽</button>
-    <button onclick="showPage('videos')">🎬</button>
-    <button onclick="showPage('news')">📰</button>
-    <button onclick="showPage('transfers')">💰</button>
-    <button onclick="showPage('analysis')">📊</button>
+<button onclick="showPage('matches')">⚽</button>
+<button onclick="showPage('news')">📰</button>
+<button onclick="showPage('transfers')">💰</button>
+<button onclick="showPage('analysis')">📊</button>
 </div>
 
 <script>
@@ -91,6 +97,42 @@ function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 }
+
+/* تحميل مباريات */
+async function loadMatches() {
+    const url = "https://api.allorigins.win/raw?url=https://www.scorebat.com/video-api/v3/";
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        let html = "";
+
+        data.response.slice(0,10).forEach(match => {
+            let teams = match.title.split(" - ");
+
+            html += `
+            <div class="match">
+                <div class="teams">
+                    <div>${teams[0]}</div>
+                    <div>🔴 LIVE</div>
+                    <div>${teams[1]}</div>
+                </div>
+                <button onclick="window.open('${match.matchviewUrl}')">
+                    ▶️ مشاهدة
+                </button>
+            </div>
+            `;
+        });
+
+        document.getElementById("matchesList").innerHTML = html;
+
+    } catch {
+        document.getElementById("matchesList").innerHTML = "خطأ بالتحميل";
+    }
+}
+
+loadMatches();
 </script>
 
 </body>
