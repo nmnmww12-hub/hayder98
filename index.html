@@ -1,14 +1,49 @@
-<div class="match-container" style="max-width: 800px; margin: 20px auto; font-family: 'Heebo', sans-serif;">
-    
-    <div id="widget-4hwimnen12cl" 
-         class="scoreaxis-widget" 
-         style="width: 100%; height: auto; font-size: 14px; background-color: #ffffff; color: #141416; border: 1px solid #ecf1f7; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        
-        <script src="https://widgets.scoreaxis.com/api/football/live-match/66717b45759a56977004a930?widgetId=4hwimnen12cl&lang=ar&lineupsBlock=1&eventsBlock=1&statsBlock=1&links=1&font=heebo&fontSize=14&rowDensity=100&widgetWidth=auto&widgetHeight=auto&bodyColor=%23ffffff&textColor=%23141416&linkColor=%23141416&borderColor=%23ecf1f7&tabColor=%23f3f8fd" async></script>
-        
-        <div class="widget-main-link" style="padding: 10px 15px; font-weight: 500; background: #f9fbff; border-top: 1px solid #ecf1f7; text-align: center; font-size: 12px;">
-            بيانات مباشرة بواسطة <a href="https://www.scoreaxis.com/" style="color: #007bff; text-decoration: none;">Scoreaxis</a>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Pro LIVE - مباريات اليوم</title>
+    <style>
+        body {
+            background-color: #0f172a; /* لون متناسق مع صورتك */
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .header {
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 2px solid #1e293b;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">⚽ Football Pro LIVE</div>
+
+    <div class="container">
+        <div id="widget-scoreaxis-today" class="scoreaxis-widget" style="width: 100%; border: none;">
+            <script 
+                src="https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=widget-scoreaxis-today&lang=ar&font=heebo&fontSize=14&bodyColor=%231e293b&textColor=%23ffffff&linkColor=%2338bdf8&borderColor=%23334155&tabColor=%230f172a" 
+                async>
+            </script>
         </div>
     </div>
-    
-</div>
+
+    <p style="margin-top: 20px; color: #94a3b8; font-size: 12px;">يتم تحديث النتائج والمباريات تلقائياً</p>
+
+</body>
+</html>
