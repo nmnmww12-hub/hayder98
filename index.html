@@ -8,107 +8,97 @@
 <style>
 body {
   margin:0;
-  font-family:Arial;
-  background:#0b1c2c;
+  font-family: Arial;
+  background:#0b1220;
   color:white;
 }
 
 .header {
-  background:#081826;
-  padding:15px;
   text-align:center;
+  padding:15px;
+  background:black;
   font-size:20px;
 }
 
 .match {
-  background:#132f4c;
+  background:#16213e;
   margin:10px;
   padding:15px;
   border-radius:10px;
   cursor:pointer;
 }
 
-.servers button {
-  margin:5px;
-  padding:10px;
-  background:#1f4e79;
-  border:none;
-  color:white;
-  border-radius:5px;
-}
-
-video {
+.player {
   width:100%;
   height:220px;
   background:black;
 }
 
+button {
+  margin:5px;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#00bcd4;
+  color:white;
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">⚽ Football Live Pro</div>
+<div class="header">⚽ Football Pro LIVE</div>
 
-<div id="matches">
+<video id="video" class="player" controls></video>
 
-<div class="match" onclick="openMatch('Real vs Barca')">
-🔥 ريال مدريد vs برشلونة
+<div style="text-align:center;">
+<button onclick="server1()">Server 1</button>
+<button onclick="server2()">Server 2</button>
 </div>
 
-<div class="match" onclick="openMatch('City vs Liverpool')">
-🔥 مانشستر سيتي vs ليفربول
-</div>
-
-</div>
-
-<div id="player"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<div id="matches"></div>
 
 <script>
 
-function openMatch(name){
-  document.getElementById("player").innerHTML = `
-    <h3>${name}</h3>
+// روابط تجريبية (تبدلها بعدين)
+let streams = [
+  "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+  "https://test-streams.mux.dev/test_001/stream.m3u8"
+];
 
-    <div class="servers">
-      <button onclick="playStream(1)">Server 1</button>
-      <button onclick="playStream(2)">Server 2</button>
-      <button onclick="playStream(3)">Server 3</button>
-    </div>
+// مباريات تجريبية
+let matches = [
+  {team1:"برشلونة", team2:"ريال مدريد"},
+  {team1:"ليفربول", team2:"مانشستر سيتي"},
+  {team1:"الزوراء", team2:"القوة الجوية"}
+];
 
-    <video id="video" controls autoplay></video>
-  `;
+function loadMatches(){
+  let container = document.getElementById("matches");
+  container.innerHTML = "";
+
+  matches.forEach((m,i)=>{
+    let div = document.createElement("div");
+    div.className = "match";
+    div.innerHTML = `⚽ ${m.team1} vs ${m.team2}`;
+    div.onclick = ()=> playMatch(streams[i % streams.length]);
+    container.appendChild(div);
+  });
 }
 
-function playStream(server){
-
-  let url = "";
-
-  if(server == 1){
-    url = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
-  }
-
-  if(server == 2){
-    url = "https://test-streams.mux.dev/test_001/stream.m3u8";
-  }
-
-  if(server == 3){
-    url = "https://test-streams.mux.dev/bbb-360p.m3u8";
-  }
-
-  var video = document.getElementById("video");
-
-  if(Hls.isSupported()){
-    var hls = new Hls();
-    hls.loadSource(url);
-    hls.attachMedia(video);
-  } else {
-    video.src = url;
-  }
-
+function playMatch(url){
+  document.getElementById("video").src = url;
 }
+
+function server1(){
+  alert("سيرفر 1 شغال");
+}
+
+function server2(){
+  alert("سيرفر 2 شغال");
+}
+
+loadMatches();
 
 </script>
 
