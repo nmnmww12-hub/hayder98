@@ -3,110 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL FOOTBALL HUB 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <title>الموسوعة الرياضية العالمية | Global Sports Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Changa:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        :root { --primary: #e11d48; --bg: #020617; --card: #0f172a; --text: #f8fafc; --accent: #fbbf24; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
-        
-        /* الهيدر الاحترافي */
-        header { background: linear-gradient(135deg, #000 0%, #1e293b 100%); padding: 25px; text-align: center; border-bottom: 4px solid var(--primary); box-shadow: 0 4px 20px rgba(225, 29, 72, 0.3); }
-        header h1 { margin: 0; font-size: 28px; letter-spacing: 2px; color: var(--text); text-transform: uppercase; }
+        :root {
+            --primary: #ff003c; /* لون رياضي ناري */
+            --secondary: #1a1e2e;
+            --bg: #05070a;
+            --card: #11141d;
+            --accent: #00d2ff;
+            --gold: #f1c40f;
+        }
 
-        .main-container { display: grid; grid-template-columns: 1fr 350px; gap: 20px; max-width: 1300px; margin: 20px auto; padding: 0 15px; }
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-        /* الأقسام */
-        .section-box { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #1e293b; transition: 0.3s; }
-        .section-box:hover { border-color: var(--primary); }
-        .title { display: flex; align-items: center; font-size: 20px; font-weight: bold; margin-bottom: 20px; color: var(--accent); }
-        .title span { background: var(--primary); width: 10px; height: 25px; margin-left: 10px; border-radius: 2px; }
+        /* الهيدر الأسطوري */
+        .navbar {
+            background: linear-gradient(to right, #000, #111);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-        /* الفيديوهات */
-        .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .video-card iframe { width: 100%; height: 200px; border-radius: 10px; border: none; }
-        .video-card p { font-size: 14px; margin-top: 10px; font-weight: bold; }
+        .logo { font-family: 'Changa', sans-serif; font-size: 26px; font-weight: 800; color: var(--primary); text-shadow: 0 0 10px rgba(255,0,60,0.5); }
+        .logo span { color: white; }
 
-        /* جدول الترتيب */
-        .table-pro { width: 100%; border-collapse: collapse; font-size: 14px; }
-        .table-pro th { background: #1e293b; padding: 10px; text-align: right; }
-        .table-pro td { padding: 12px; border-bottom: 1px solid #1e293b; }
-        .pos-1 { color: #4ade80; font-weight: bold; }
-
-        /* شريط الأخبار العاجلة */
-        .news-ticker { background: var(--primary); color: white; padding: 10px; overflow: hidden; white-space: nowrap; position: relative; }
-        .news-ticker-content { display: inline-block; animation: ticker 30s linear infinite; }
+        /* شريط الأخبار المتحرك */
+        .ticker-wrap {
+            background: var(--primary);
+            color: white;
+            padding: 8px 0;
+            overflow: hidden;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 40s linear infinite; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* الجوال */
-        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } .video-grid { grid-template-columns: 1fr; } }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* الحاويات */
+        .glass-card {
+            background: var(--card);
+            border-radius: 15px;
+            border: 1px solid #222;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gold);
+        }
+
+        /* مركز المباريات */
+        .match-center { min-height: 500px; background: #0c0f16; border-radius: 12px; overflow: hidden; }
+
+        /* معرض الميديا */
+        .video-player {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #000;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+        .video-player iframe { width: 100%; height: 100%; border: none; }
+
+        /* ترتيب الدوريات */
+        .standings-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .standings-table th { background: #1e2433; padding: 10px; color: var(--accent); }
+        .standings-table td { padding: 10px; border-bottom: 1px dotted #333; text-align: center; }
+        .first-row { background: rgba(0, 210, 255, 0.1); color: #4ade80; font-weight: bold; }
+
+        /* زر التفاعل */
+        .btn-live {
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(255,0,60,0.7);} 70% {box-shadow: 0 0 0 10px rgba(255,0,60,0);} 100% {box-shadow: 0 0 0 0 rgba(255,0,60,0);} }
+
+        /* استجابة الجوال */
+        @media (max-width: 1100px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .sidebar-left, .sidebar-right { order: 2; }
+            .content-main { order: 1; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>GLOBAL FOOTBALL HUB 2026 ⚽</h1>
-</header>
-
-<div class="news-ticker">
-    <div class="news-ticker-content">
-        🔥 عاجل: ليفربول يرفض عرضاً ضخماً من الاتحاد لضم صلاح .. 🏆 ريال مدريد يقترب من حسم لقب دوري أبطال أوروبا بعد سداسية موناكو .. 🔄 ميركاتو صيف 2026 يبدأ مبكراً بصراع على خدمات هالاند .. 📊 برشلونة يتصدر الليغا بفارق 4 نقاط عن الريال ..
-    </div>
-</div>
-
-<div class="main-container">
-    
-    <div class="content">
-        <div class="section-box">
-            <div class="title"><span></span> مباريات اليوم المباشرة</div>
-            <div id="wg-fixtures" style="min-height: 400px;">
-                <script src="https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=wg-fixtures&lang=ar&bodyColor=%230f172a&textColor=%23ffffff&linkColor=%23e11d48&links=0" async></script>
-            </div>
+    <nav class="navbar">
+        <div class="logo">GLOBAL<span>SPORTS</span></div>
+        <div style="display: flex; gap: 15px;">
+            <i class="fab fa-youtube" style="color:red; font-size: 20px;"></i>
+            <i class="fab fa-telegram" style="color:#0088cc; font-size: 20px;"></i>
+            <span class="btn-live">بث مباشر 2026</span>
         </div>
+    </nav>
 
-        <div class="section-box">
-            <div class="title"><span></span> ملخصات دوري الأبطال (ريال مدريد)</div>
-            <div class="video-grid">
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/iWXU3SpFVRQ" allowfullscreen></iframe>
-                    <p>الجولة الأخيرة: سداسية تاريخية للملكي 2026</p>
+    <div class="ticker-wrap">
+        <div class="ticker">
+            🚨 عاجل: برشلونة يبتعد بالصدارة بعد فوزه المثير في الكلاسيكو الأخير .. 🏆 ريال مدريد يعلن جاهزية مبابي لموقعة ربع نهائي دوري الأبطال .. 🔄 تقارير: محمد صلاح يوافق مبدئياً على الانتقال للدوري السعودي في صيف 2026 .. ⚽ ليفربول يتصدر البريميرليغ بفارق نقطتين عن مانشستر سيتي .. 🌟 لامين يامال يحقق جائزة أفضل لاعب في شهر مارس ..
+        </div>
+    </div>
+
+    <main class="main-grid">
+
+        <aside class="sidebar-left">
+            <div class="glass-card">
+                <div class="section-title"><i class="fas fa-trophy"></i> ترتيب الليغا 2026</div>
+                <table class="standings-table">
+                    <thead><tr><th>#</th><th>الفريق</th><th>نقاط</th></tr></thead>
+                    <tbody>
+                        <tr class="first-row"><td>1</td><td>برشلونة</td><td>73</td></tr>
+                        <tr class="first-row"><td>2</td><td>ريال مدريد</td><td>69</td></tr>
+                        <tr><td>3</td><td>فياريال</td><td>58</td></tr>
+                        <tr><td>4</td><td>أتلتيكو مدريد</td><td>57</td></tr>
+                        <tr><td>5</td><td>إشبيلية</td><td>52</td></tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="section-title"><i class="fas fa-bolt"></i> ميركاتو 2026</div>
+                <div style="font-size: 12px; color: #ccc;">
+                    <p>• فودين مطلوب في ريال مدريد بصفقة خيالية.</p>
+                    <p>• بايرن ميونخ يقترب من ضم مدافع أرسنال ساليبا.</p>
+                    <p>• تشافي مرشح لتدريب المنتخب الإسباني قريباً.</p>
                 </div>
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/oF4D2KUk4WQ" allowfullscreen></iframe>
-                    <p>ريمونتادا ريال مدريد في دور الـ 16</p>
+            </div>
+        </aside>
+
+        <section class="content-main">
+            <div class="section-title"><i class="fas fa-play-circle"></i> ملخصات دوري أبطال أوروبا (مارس 2026)</div>
+            <div class="video-player">
+                <iframe src="https://www.youtube.com/embed/iWXU3SpFVRQ?autoplay=1&mute=1" allowfullscreen></iframe>
+            </div>
+
+            <div class="section-title"><i class="fas fa-calendar-check"></i> مركز مباريات اليوم مباشر</div>
+            <div class="match-center glass-card">
+                <div id="wg-api-football-main" class="scoreaxis-widget">
+                    <script src="https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=wg-api-football-main&lang=ar&bodyColor=%2311141d&textColor=%23ffffff&linkColor=%23ff003c&font=cairo&links=0" async></script>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="sidebar">
-        <div class="section-box">
-            <div class="title"><span></span> ترتيب الليغا 2026</div>
-            <table class="table-pro">
-                <tr><th>#</th><th>الفريق</th><th>نقاط</th></tr>
-                <tr><td class="pos-1">1</td><td>برشلونة</td><td>73</td></tr>
-                <tr><td class="pos-1">2</td><td>ريال مدريد</td><td>69</td></tr>
-                <tr><td>3</td><td>فياريال</td><td>58</td></tr>
-                <tr><td>4</td><td>أتلتيكو مدريد</td><td>57</td></tr>
-            </table>
-        </div>
+        <aside class="sidebar-right">
+            <div class="glass-card">
+                <div class="section-title"><i class="fas fa-video"></i> أهداف ريال مدريد</div>
+                <div style="margin-bottom: 15px;">
+                    <iframe width="100%" height="150" src="https://www.youtube.com/embed/oF4D2KUk4WQ" style="border-radius: 8px;"></iframe>
+                    <p style="font-size: 12px; margin-top: 5px;">ملخص فوز الملكي في دور الـ 16</p>
+                </div>
 
-        <div class="section-box">
-            <div class="title"><span></span> سوق الانتقالات 2026</div>
-            <div style="font-size: 13px; line-height: 1.8;">
-                <p>✅ <b>رسمياً:</b> بايرن ميونخ يضم موهبة فلامنجو الجديدة.</p>
-                <hr style="border: 0; border-top: 1px solid #1e293b;">
-                <p>⏳ <b>إشاعة:</b> باريس سان جيرمان يجهز 150 مليون لضم فينيسيوس جونيور.</p>
-                <hr style="border: 0; border-top: 1px solid #1e293b;">
-                <p>💎 <b>موهبة:</b> لامين يامال يقترب من تجديد عقده بمليار يورو كشرط جزائي.</p>
+                <div class="section-title"><i class="fas fa-newspaper"></i> عالم الرياضة</div>
+                <div style="background: #000; padding: 10px; border-radius: 8px; font-size: 13px; line-height: 1.6;">
+                    🗞️ <b>تقرير:</b> الدوري الإنجليزي يطبق تقنية "التسلل الآلي" الجديدة كلياً في موسم 2026.
+                    <hr style="border: 0; border-top: 1px solid #222;">
+                    👟 <b>نايكي:</b> تكشف عن حذاء "فينيسيوس" الخاص لنهائي الأبطال.
+                </div>
             </div>
+        </aside>
+
+    </main>
+
+    <footer style="text-align: center; padding: 40px; background: #000; color: #555; border-top: 1px solid #111;">
+        <div class="logo" style="font-size: 20px;">GLOBAL<span>SPORTS</span></div>
+        <p>جميع الحقوق محفوظة لموقعك الرياضي © 2026</p>
+        <div style="font-size: 20px; gap: 20px; display: flex; justify-content: center;">
+            <i class="fab fa-facebook"></i> <i class="fab fa-twitter"></i> <i class="fab fa-instagram"></i>
         </div>
-    </div>
-
-</div>
-
-<footer style="text-align: center; padding: 50px; background: #000; color: #475569; font-size: 12px; border-top: 1px solid var(--primary);">
-    © 2026 FOOTBALL GLOBAL NETWORK - برمجة عالمية متطورة
-</footer>
+    </footer>
 
 </body>
 </html>
