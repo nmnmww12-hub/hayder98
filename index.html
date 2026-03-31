@@ -1,10 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-<title>Test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Football Live</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b1220;
+    color: white;
+}
+
+header {
+    text-align: center;
+    padding: 15px;
+    font-size: 20px;
+    background: #111a2e;
+}
+
+.match {
+    background: #1c2742;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team {
+    text-align: center;
+    width: 40%;
+}
+
+.time {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #111a2e;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+</style>
+
 </head>
-<body style="background:black;color:white;text-align:center;">
-<h1>🔥 الموقع اشتغل</h1>
-<p>اذا تشوف هذا النص، كلشي تمام</p>
+
+<body>
+
+<header>⚽ مباريات اليوم</header>
+
+<div class="match">
+    <div class="team">الزوراء</div>
+    <div class="time">03:00 م</div>
+    <div class="team">أربيل</div>
+</div>
+
+<div class="match">
+    <div class="team">القوة الجوية</div>
+    <div class="time">05:00 م</div>
+    <div class="team">الشرطة</div>
+</div>
+
+<div class="match">
+    <div class="team">ريال مدريد</div>
+    <div class="time">10:00 م</div>
+    <div class="team">برشلونة</div>
+</div>
+
+<div class="match">
+    <div class="team">ليفربول</div>
+    <div class="time">08:30 م</div>
+    <div class="team">مانشستر سيتي</div>
+</div>
+
+<div class="bottom">
+    <div>⚽</div>
+    <div>📰</div>
+    <div>💰</div>
+    <div>📊</div>
+</div>
+
 </body>
 </html>
