@@ -2,507 +2,264 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة الرياضية العالمية 2026 | PRO SPORTS HUB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PRO SPORTS HUB | المنظومة العالمية 2026</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Changa:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <script src="https://telegram.org/js/telegram-web-app.js"></script> <style>
-        /* 1. نظام الألوان المتطور (Modern Color Palette) */
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
         :root {
-            --primary: #ff003c; /* أحمر ناري */
-            --primary-dark: #b3002a;
-            --secondary: #0f172a; /* كحلي غامق جداً */
-            --bg-dark: #020617; /* أسود أعمق */
-            --card-bg: #111827;
-            --text-light: #f8fafc;
-            --text-dim: #94a3b8;
-            --accent: #00f2ff; /* لون فسفوري للتركيز */
-            --gold: #fbbf24;
-            --success: #22c55e;
-            --shadow: 0 10px 30px rgba(0,0,0,0.7);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --primary: #ff003c;
+            --secondary: #1a1a1a;
+            --bg: #080808;
+            --card: #141414;
+            --text: #ffffff;
+            --gray: #888;
+            --live: #00ff62;
+            --accent: #2c2c2c;
         }
 
-        /* 2. التنسيق العام والأساسيات */
-        * { margin: 0; padding: 0; box-box-sizing: border-box; }
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: 'Cairo', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* 3. شريط التمرير الاحترافي */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
-        /* 4. الهيدر (Header) بتصميم زجاجي */
+        /* Header الاحترافي */
         header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(15px);
+            background: #000;
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--primary);
             position: sticky;
             top: 0;
-            z-index: 9999;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 4px 20px rgba(255, 0, 60, 0.2);
         }
-
-        .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-area h1 { font-family: 'Changa', sans-serif; font-size: 28px; color: var(--primary); font-weight: 900; }
-        .logo-area span { color: white; }
-
-        .live-indicator {
-            background: var(--primary);
-            color: white;
-            padding: 4px 12px;
+        .brand { font-size: 26px; font-weight: 900; color: var(--primary); }
+        .brand span { color: white; }
+        
+        .live-status {
+            background: rgba(0, 255, 98, 0.1);
+            color: var(--live);
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.1); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* 5. شريط الأقسام (Navigation Tabs) */
-        .nav-tabs {
-            background: var(--card-bg);
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 15px 0;
-            border-bottom: 1px solid #1e293b;
+            align-items: center;
+            gap: 8px;
+        }
+        .pulse { width: 8px; height: 8px; background: var(--live); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+        /* شريط التحكم (الأقسام) - نفس فكرة التطبيقات */
+        .main-nav {
+            display: flex;
+            background: var(--secondary);
+            padding: 10px 5%;
+            gap: 15px;
             overflow-x: auto;
+            border-bottom: 1px solid var(--accent);
         }
-
-        .tab-btn {
-            background: transparent;
-            border: 1px solid #334155;
-            color: var(--text-dim);
-            padding: 10px 25px;
-            border-radius: 50px;
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: var(--gray);
             cursor: pointer;
-            font-weight: bold;
             white-space: nowrap;
-            transition: var(--transition);
+            transition: 0.3s;
+            border: none;
+            font-weight: bold;
         }
+        .nav-btn.active { background: var(--primary); color: white; }
 
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(255, 0, 60, 0.4);
-        }
-
-        /* 6. الشبكة الرئيسية (Grid Layout) */
-        .main-wrapper {
+        /* تخطيط المحتوى (Grid) */
+        .app-container {
             display: grid;
-            grid-template-columns: 320px 1fr 320px;
-            gap: 25px;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
+            padding: 20px 5%;
             max-width: 1600px;
-            margin: 25px auto;
-            padding: 0 20px;
+            margin: auto;
         }
 
-        /* 7. الصناديق الزجاجية (Glassmorphism Cards) */
+        /* البطاقات الرياضية */
         .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--card);
+            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--accent);
+            margin-bottom: 20px;
         }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--primary);
-        }
-
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 10px;
-        }
-
-        .card-title { font-size: 18px; font-weight: 800; color: var(--accent); display: flex; align-items: center; gap: 10px; }
-
-        /* 8. شريط الأخبار العاجلة المطور */
-        .ticker-container {
-            background: linear-gradient(90deg, #ff003c, #8b0000);
-            color: white;
-            padding: 12px 0;
-            position: relative;
-            z-index: 100;
-        }
-
-        .ticker-content {
-            display: flex;
-            white-space: nowrap;
-            animation: tickerFlow 50s linear infinite;
-        }
-
-        .ticker-item { display: inline-flex; align-items: center; margin-right: 50px; font-weight: bold; }
-        .ticker-item i { margin-left: 10px; font-size: 18px; }
-
-        @keyframes tickerFlow {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* 9. قسم الفيديوهات (Video Cinema) */
-        .video-cinema {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            border-radius: 15px;
-            overflow: hidden;
-            background: #000;
-            border: 2px solid #334155;
             margin-bottom: 15px;
+            border-right: 4px solid var(--primary);
+            padding-right: 12px;
         }
 
-        .video-cinema iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%; border: none;
-        }
-
-        /* 10. جدول الترتيب العالمي */
-        .stats-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .stats-table th { background: #1e293b; padding: 12px; font-size: 12px; color: var(--accent); }
-        .stats-table td { padding: 14px; text-align: center; border-bottom: 1px solid #1e293b; font-size: 14px; }
-        .stats-table tr:hover { background: rgba(255, 255, 255, 0.02); }
-        .rank-high { background: rgba(34, 197, 94, 0.1); color: var(--success); font-weight: bold; }
-
-        /* 11. عناصر الواجهة المتفاعلة (UI Widgets) */
-        .match-card {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+        /* جدول المباريات - نظام 365Scores */
+        .match-row {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            border: 1px solid #334155;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            transition: 0.3s;
         }
+        .match-row:hover { background: rgba(255,255,255,0.07); }
+        .team { display: flex; align-items: center; gap: 10px; width: 40%; font-weight: bold; }
+        .team.left { justify-content: flex-end; text-align: left; }
+        .score-box { background: #000; padding: 5px 15px; border-radius: 8px; color: var(--primary); font-weight: 900; min-width: 60px; text-align: center; }
 
-        .team-box { text-align: center; width: 35%; }
-        .team-box img { width: 45px; height: 45px; object-fit: contain; }
-        .team-name { font-size: 13px; font-weight: bold; margin-top: 5px; }
+        /* فيديوهات ريال مدريد - جودة عالية */
+        .video-grid { display: grid; gap: 15px; }
+        .video-item { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--accent); }
+        .video-item iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+        .video-desc { padding: 10px; font-size: 14px; background: #1a1a1a; }
 
-        .match-info { text-align: center; width: 30%; }
-        .match-score { font-size: 22px; font-weight: 900; color: var(--gold); }
-        .match-status { font-size: 10px; background: #000; padding: 2px 8px; border-radius: 4px; color: var(--primary); }
+        /* الترتيب (Standings) */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { color: var(--gray); font-size: 12px; padding: 10px; text-align: center; border-bottom: 1px solid var(--accent); }
+        td { padding: 12px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .pos { font-weight: 900; color: var(--primary); }
+        .team-name-table { text-align: right; width: 50%; font-weight: bold; }
 
-        /* 12. قسم الانتقالات (Transfers Market) */
+        /* قسم الانتقالات - سوق 2026 */
         .transfer-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 0;
-            border-bottom: 1px solid #1e293b;
+            padding: 12px;
+            border-right: 3px solid gold;
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
-        .player-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); }
-        .transfer-details h4 { font-size: 14px; margin-bottom: 2px; }
-        .transfer-details p { font-size: 11px; color: var(--text-dim); }
+        .transfer-item .tag { font-size: 10px; background: gold; color: black; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 
-        /* 13. الفوتر (Footer) */
-        footer {
-            background: #000;
-            padding: 60px 5%;
-            text-align: center;
-            border-top: 3px solid var(--primary);
-            margin-top: 50px;
+        /* الأنيميشن */
+        @keyframes pulse { 0% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.4; transform: scale(1); } }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .app-container { grid-template-columns: 1fr; }
+            .sidebar-left, .sidebar-right { display: none; }
         }
-
-        .social-links { display: flex; justify-content: center; gap: 25px; margin: 30px 0; }
-        .social-links a { color: white; font-size: 28px; transition: var(--transition); }
-        .social-links a:hover { color: var(--primary); transform: translateY(-5px); }
-
-        /* 14. تصميم الجوال (Mobile Layout) */
-        @media (max-width: 1200px) {
-            .main-wrapper { grid-template-columns: 1fr; }
-            .sidebar-left, .sidebar-right { display: none; } /* إخفاء الجوانب في الشاشات الصغيرة لتسهيل التصفح */
-        }
-
-        /* 15. قسم المحادثة الحية (Live Chat UI) */
-        .chat-box {
-            height: 300px;
-            overflow-y: auto;
-            background: #020617;
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 12px;
-        }
-        .msg { margin-bottom: 10px; padding: 8px; border-radius: 8px; background: #1e293b; }
-        .msg span { font-weight: bold; color: var(--primary); }
-
-        /* 16. تأثيرات الأنيميشن للمحتوى */
-        .fade-in { animation: fadeIn 0.8s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-area">
-            <i class="fas fa-trophy" style="font-size: 30px; color: var(--gold);"></i>
-            <h1>PRO<span>SPORTS</span> HUB</h1>
-        </div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div class="live-indicator"><i class="fas fa-broadcast-tower"></i> بث حي 2026</div>
-            <i class="fas fa-search" style="font-size: 20px; cursor: pointer;"></i>
+        <div class="brand">PRO<span>SPORTS</span> 2026</div>
+        <div class="live-status">
+            <div class="pulse"></div> بث مباشر: دوري أبطال أوروبا
         </div>
     </header>
 
-    <div class="ticker-container">
-        <div class="ticker-content">
-            <div class="ticker-item"><i class="fas fa-fire"></i> عاجل: برشلونة يحسم لقب "الليغا" رسمياً قبل 3 جولات من النهاية ..</div>
-            <div class="ticker-item"><i class="fas fa-star"></i> ريال مدريد يعلن ضم "فلوريان فيرتز" بصفقة قياسية صيف 2026 ..</div>
-            <div class="ticker-item"><i class="fas fa-newspaper"></i> رومانو: محمد صلاح يرفض التجديد لليفربول ويقترب من الدوري السعودي ..</div>
-            <div class="ticker-item"><i class="fas fa-futbol"></i> دوري أبطال أوروبا: مانشستر سيتي يواجه ريال مدريد في قمة ربع النهائي ..</div>
-            <div class="ticker-item"><i class="fas fa-bolt"></i> لامين يامال يحطم الرقم القياسي كأصغر لاعب يسجل 50 هدفاً في الدوريات الكبرى ..</div>
-        </div>
+    <div class="main-nav">
+        <button class="nav-btn active" onclick="switchTab('all')">الكل</button>
+        <button class="nav-btn" onclick="switchTab('matches')">المباريات</button>
+        <button class="nav-btn" onclick="switchTab('news')">أخبار الانتقالات</button>
+        <button class="nav-btn" onclick="switchTab('videos')">ملخصات</button>
+        <button class="nav-btn" onclick="switchTab('table')">الترتيب</button>
     </div>
 
-    <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchSection('matches')"><i class="fas fa-calendar-day"></i> مباريات اليوم</button>
-        <button class="tab-btn" onclick="switchSection('videos')"><i class="fas fa-video"></i> الأهداف والملخصات</button>
-        <button class="tab-btn" onclick="switchSection('standings')"><i class="fas fa-list-ol"></i> الترتيب والإحصائيات</button>
-        <button class="tab-btn" onclick="switchSection('news')"><i class="fas fa-newspaper"></i> أخبار الانتقالات</button>
-        <button class="tab-btn" onclick="switchSection('players')"><i class="fas fa-users"></i> سوق اللاعبين</button>
-    </nav>
-
-    <main class="main-wrapper">
-
-        <aside class="sidebar-left fade-in">
+    <div class="app-container">
+        <aside class="sidebar-left">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-list-ol"></i> ترتيب الدوري الإسباني</div>
-                    <i class="fas fa-expand-alt" style="font-size: 12px; color: var(--text-dim);"></i>
+                <div class="card-header"><h3>البطولات</h3></div>
+                <div class="league-link"><i class="fas fa-trophy"></i> دوري أبطال أوروبا</div>
+                <div class="league-link"><i class="fas fa-flag"></i> الدوري الإسباني</div>
+                <div class="league-link"><i class="fas fa-crown"></i> الدوري الإنجليزي</div>
+                <div class="league-link"><i class="fas fa-futbol"></i> دوري روشن</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header"><h3>إحصائيات ريال مدريد</h3></div>
+                <div style="font-size: 14px;">
+                    <p>الأهداف المسجلة: 74</p>
+                    <p>الشباك النظيفة: 18</p>
+                    <p>نسبة الفوز: 82%</p>
                 </div>
-                <table class="stats-table">
-                    <thead><tr><th>#</th><th>الفريق</th><th>لعب</th><th>نقاط</th></tr></thead>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <div class="card section" id="matches-section">
+                <div class="card-header">
+                    <h3>مباريات اليوم <small id="today-date" style="color:var(--gray); font-size:12px;"></small></h3>
+                </div>
+                <div class="scoreaxis-widget" data-widget="scoreaxis-widget-4hwimnen12cl" style="width: 100%;"></div>
+                <script src="https://widgets.scoreaxis.com/widget.js"></script>
+
+                <div id="custom-matches-list">
+                    <div class="match-row">
+                        <div class="team left">ريال مدريد <i class="fas fa-shield-alt"></i></div>
+                        <div class="score-box">2 - 1</div>
+                        <div class="team">برشلونة <i class="fas fa-shield-alt"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card section" id="videos-section">
+                <div class="card-header"><h3>ملخصات ريال مدريد - الأبطال</h3></div>
+                <div class="video-grid">
+                    <div class="video-item">
+                        <iframe src="https://www.youtube.com/embed/S_8H6Qk8u_k" allowfullscreen></iframe>
+                        <div class="video-desc">حصري: ملخص فوز ريال مدريد في ربع النهائي 2026</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="card">
+                <div class="card-header"><h3>ترتيب الليغا كامل</h3></div>
+                <table>
+                    <thead><tr><th>#</th><th style="text-align:right;">النادي</th><th>ل</th><th>ن</th></tr></thead>
                     <tbody>
-                        <tr class="rank-high"><td>1</td><td>برشلونة</td><td>32</td><td>79</td></tr>
-                        <tr class="rank-high"><td>2</td><td>ريال مدريد</td><td>32</td><td>74</td></tr>
-                        <tr><td>3</td><td>فياريال</td><td>32</td><td>61</td></tr>
-                        <tr><td>4</td><td>أتلتيكو مدريد</td><td>31</td><td>59</td></tr>
-                        <tr><td>5</td><td>إشبيلية</td><td>32</td><td>55</td></tr>
+                        <tr><td class="pos">1</td><td class="team-name-table">ريال مدريد</td><td>28</td><td>72</td></tr>
+                        <tr><td class="pos">2</td><td class="team-name-table">برشلونة</td><td>28</td><td>65</td></tr>
+                        <tr><td class="pos">3</td><td class="team-name-table">أتلتيكو</td><td>28</td><td>60</td></tr>
+                        <tr><td class="pos">4</td><td class="team-name-table">جيرونا</td><td>28</td><td>55</td></tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-chart-line"></i> هدافو الموسم 2026</div>
+                <div class="card-header"><h3>سوق صفقات 2026</h3></div>
+                <div class="transfer-item">
+                    <span class="tag">عاجل</span>
+                    <p style="font-size: 13px;">تجديد عقد فينيسيوس جونيور حتى 2030 بشرط جزائي خيالي.</p>
                 </div>
-                <canvas id="scorersChart" width="100" height="80"></canvas>
+                <div class="transfer-item">
+                    <span class="tag">رسمي</span>
+                    <p style="font-size: 13px;">مانشستر سيتي يعلن التعاقد مع الموهبة البرازيلية الجديدة.</p>
+                </div>
             </div>
         </aside>
-
-        <section class="content-main">
-            
-            <div id="videos-section" class="section-container fade-in">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title"><i class="fas fa-play-circle"></i> ملخص ريال مدريد الأخير (الأبطال)</div>
-                    </div>
-                    <div class="video-cinema">
-                        <iframe src="https://www.youtube.com/embed/iWXU3SpFVRQ?autoplay=0&mute=0" allowfullscreen></iframe>
-                    </div>
-                    <p style="font-size: 14px; color: var(--text-dim);">
-                        شاهد سداسية ريال مدريد التاريخية في الجولة الأخيرة من دوري أبطال أوروبا 2026.
-                    </p>
-                </div>
-            </div>
-
-            <div id="matches-section" class="section-container fade-in">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title"><i class="fas fa-calendar-alt"></i> مباريات اليوم مباشر</div>
-                        <span style="font-size: 11px; color: var(--primary);">تحديث تلقائي <i class="fas fa-sync-alt fa-spin"></i></span>
-                    </div>
-                    
-                    <div style="min-height: 400px; background: #0c0f16; border-radius: 15px;">
-                        <div id="sa-widget-matches" class="scoreaxis-widget">
-                            <script src="https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=sa-widget-matches&lang=ar&bodyColor=%23111827&textColor=%23ffffff&linkColor=%23ff003c&font=cairo&links=0" async></script>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="news-section" class="section-container fade-in">
-                <div class="card">
-                    <div class="card-header"><div class="card-title">🚨 آخر أنباء الميركاتو</div></div>
-                    
-                    <div class="transfer-item">
-                        <img src="https://via.placeholder.com/150/000000/FFFFFF?text=SALAH" class="player-img">
-                        <div class="transfer-details">
-                            <h4>محمد صلاح ⬅️ الهلال السعودي</h4>
-                            <p>اتفاق مبدئي بين الطرفين براتب يصل لـ 100 مليون يورو سنوياً.</p>
-                        </div>
-                        <span style="color: var(--gold); font-size: 12px; font-weight: bold;">90%</span>
-                    </div>
-
-                    <div class="transfer-item">
-                        <img src="https://via.placeholder.com/150/000000/FFFFFF?text=VIRTZ" class="player-img">
-                        <div class="transfer-details">
-                            <h4>فلوريان فيرتز ⬅️ ريال مدريد</h4>
-                            <p>بيريز ينهي التفاوض مع ليفركوزن بصفقة تتجاوز 120 مليون يورو.</p>
-                        </div>
-                        <span style="color: var(--success); font-size: 12px; font-weight: bold;">رسمياً</span>
-                    </div>
-
-                    <div class="transfer-item">
-                        <img src="https://via.placeholder.com/150/000000/FFFFFF?text=YAMAL" class="player-img">
-                        <div class="transfer-details">
-                            <h4>لامين يامال ⬅️ برشلونة</h4>
-                            <p>تمديد العقد حتى 2032 بشرط جزائي بقيمة مليار ونصف يورو.</p>
-                        </div>
-                        <span style="color: var(--success); font-size: 12px; font-weight: bold;">تجديد</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <aside class="sidebar-right fade-in">
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-comments"></i> شات الجمهور (Live)</div></div>
-                <div class="chat-box" id="liveChat">
-                    <div class="msg"><span>أحمد:</span> الكلاسيكو الجاي رح يكون ناري 🔥</div>
-                    <div class="msg"><span>مدريدي:</span> ريال مدريد دائماً في الموعد بالأبطال.</div>
-                    <div class="msg"><span>ياسين:</span> مين برأيكم أفضل لاعب هالشهر؟</div>
-                </div>
-                <input type="text" placeholder="اكتب تعليقك هنا..." style="width: 100%; padding: 10px; margin-top: 10px; background: #1e293b; border: none; border-radius: 8px; color: white;">
-            </div>
-
-            <div class="card">
-                <div class="card-header"><div class="card-title"><i class="fas fa-poll"></i> استطلاع الرأي</div></div>
-                <p style="font-size: 13px; margin-bottom: 10px;">من سيفوز بدوري الأبطال 2026؟</p>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <button class="tab-btn" style="text-align: right; width: 100%;">ريال مدريد (65%)</button>
-                    <button class="tab-btn" style="text-align: right; width: 100%;">مانشستر سيتي (20%)</button>
-                    <button class="tab-btn" style="text-align: right; width: 100%;">برشلونة (15%)</button>
-                </div>
-            </div>
-
-            <div class="card" style="background: linear-gradient(135deg, #1e293b 0%, #000000 100%);">
-                <div class="card-header"><div class="card-title"><i class="fab fa-telegram"></i> بوت التليجرام</div></div>
-                <p style="font-size: 12px;">فعل التنبيهات لتصلك الأهداف فور تسجيلها داخل البوت مباشرة!</p>
-                <a href="#" class="tab-btn" style="display: block; text-align: center; margin-top: 10px; background: #0088cc;">اشترك الآن</a>
-            </div>
-        </aside>
-
-    </main>
-
-    <footer>
-        <div class="logo-area" style="justify-content: center; margin-bottom: 20px;">
-            <i class="fas fa-futbol" style="font-size: 40px; color: var(--primary);"></i>
-            <h1 style="font-size: 40px;">PRO<span>SPORTS</span> HUB</h1>
-        </div>
-        <p style="color: var(--text-dim); max-width: 600px; margin: 0 auto;">
-            أكبر منصة رياضية عربية لمتابعة نتائج المباريات المباشرة، ملخصات الأهداف، وأخبار الانتقالات الحصرية لعام 2026. نحن نستخدم أحدث تقنيات البيانات لضمان دقة المعلومة.
-        </p>
-        
-        <div class="social-links">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-telegram-plane"></i></a>
-        </div>
-
-        <div style="font-size: 12px; color: #444;">
-            &copy; 2026 جميع الحقوق محفوظة - تم التطوير بواسطة المنظومة العالمية للرياضة.
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // تفعيل الربط مع تليجرام
-        const tg = window.Telegram.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand();
+        // نظام تبديل الأقسام الذكي
+        function switchTab(tab) {
+            // إزالة الحالة النشطة من الأزرار
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // منطق التصفية (يمكنك توسيع هذا لإخفاء وإظهار الـ Sections)
+            console.log("Switching to: " + tab);
         }
 
-        // نظام التنقل بين الأقسام (Tab Switching)
-        function switchSection(sectionId) {
-            // إخفاء كل الأقسام
-            document.querySelectorAll('.section-container').forEach(sec => {
-                sec.style.display = 'none';
-            });
-            // إظهار القسم المطلوب
-            document.getElementById(sectionId + '-section').style.display = 'block';
-            
-            // تحديث حالة الأزرار
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-        }
-
-        // رسم بياني لهدافي الموسم (Chart.js)
-        const ctx = document.getElementById('scorersChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['هالاند', 'مبابي', 'فينيسيوس', 'يامال', 'بيلينجهام'],
-                datasets: [{
-                    label: 'عدد الأهداف',
-                    data: [34, 29, 21, 18, 15],
-                    backgroundColor: ['#ff003c', '#fbbf24', '#00f2ff', '#22c55e', '#a855f7'],
-                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
-                }
-            }
-        });
-
-        // محاكاة وصول رسائل شات جديدة
-        setInterval(() => {
-            const messages = [
-                "صلاح يقترب جداً من الهلال 🇸🇦",
-                "يا شباب شوفوا هدف موناكو الأخير!",
-                "برشلونة بطل الليغا رسمياً 🔥",
-                "أفضل موقع رياضي بالتاريخ!"
-            ];
-            const chat = document.getElementById('liveChat');
-            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-            const div = document.createElement('div');
-            div.className = 'msg fade-in';
-            div.innerHTML = `<span>زائر:</span> ${randomMsg}`;
-            chat.prepend(div);
-            if (chat.children.length > 8) chat.lastElementChild.remove();
-        }, 5000);
-
-        // جعل قسم المباريات هو الافتراضي
-        switchSection('matches');
-
+        // تحديث التاريخ لعام 2026
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('today-date').innerText = new Date().toLocaleDateString('ar-EG', options);
+        
+        // المحاكي البرمجي لجلب النتائج
+        console.log("Pro Sports Hub Engine 2026 Running...");
     </script>
 </body>
-                </html>
+</html>
