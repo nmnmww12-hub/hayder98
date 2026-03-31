@@ -3,47 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Pro LIVE - مباريات اليوم</title>
+    <title>مباريات اليوم - مباشر</title>
     <style>
         body {
-            background-color: #0f172a; /* لون متناسق مع صورتك */
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0e14; /* خلفية داكنة احترافية */
+            color: #ffffff;
+            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            text-align: center;
+            padding: 10px;
         }
         .header {
-            padding: 20px;
-            font-size: 24px;
+            text-align: center;
+            padding: 15px;
+            background: #1a1e26;
+            margin-bottom: 15px;
+            border-radius: 8px;
             font-weight: bold;
-            border-bottom: 2px solid #1e293b;
-            margin-bottom: 20px;
         }
-        .container {
-            max-width: 900px;
+        /* لضمان بقاء الإضافة داخل الصفحة بشكل مرتب */
+        .widget-wrapper {
+            width: 100%;
+            max-width: 600px;
             margin: 0 auto;
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            min-height: 600px; /* يحجز مساحة حتى لا تظهر الصفحة بيضاء */
         }
     </style>
 </head>
 <body>
 
-    <div class="header">⚽ Football Pro LIVE</div>
+    <div class="header">⚽ جدول مباريات اليوم المباشر</div>
 
-    <div class="container">
-        <div id="widget-scoreaxis-today" class="scoreaxis-widget" style="width: 100%; border: none;">
-            <script 
-                src="https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=widget-scoreaxis-today&lang=ar&font=heebo&fontSize=14&bodyColor=%231e293b&textColor=%23ffffff&linkColor=%2338bdf8&borderColor=%23334155&tabColor=%230f172a" 
-                async>
-            </script>
-        </div>
+    <div class="widget-wrapper">
+        <div id="sa-widget-matches" class="scoreaxis-widget"></div>
+        <script>
+            (function() {
+                var script = document.createElement('script');
+                script.src = "https://widgets.scoreaxis.com/api/football/fixtures-today?widgetId=sa-widget-matches&lang=ar&font=heebo&fontSize=14&bodyColor=%231a1e26&textColor=%23ffffff&linkColor=%2338bdf8&borderColor=%23334155&tabColor=%230b0e14&rowDensity=100&links=0"; // تم تعطيل الروابط الخارجية بـ links=0
+                script.async = true;
+                document.getElementById('sa-widget-matches').appendChild(script);
+            })();
+        </script>
     </div>
 
-    <p style="margin-top: 20px; color: #94a3b8; font-size: 12px;">يتم تحديث النتائج والمباريات تلقائياً</p>
+    <div style="text-align:center; font-size:11px; margin-top:20px; color:#555;">
+        تحديث تلقائي للمباريات والنتائج
+    </div>
 
 </body>
 </html>
