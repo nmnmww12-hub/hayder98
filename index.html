@@ -3,243 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Football Pro MAX</title>
+<title>Football Pro</title>
 
 <style>
-body{
-margin:0;
-font-family:Arial;
-color:white;
-overflow-x:hidden;
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0b1c2c;
+  color:white;
 }
 
-/* خلفية احترافية متحركة */
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-z-index:-1;
-background-size:cover;
-background-position:center;
-animation:bg 25s infinite;
+.header {
+  text-align:center;
+  padding:15px;
+  font-size:20px;
+  background:#081826;
 }
 
-@keyframes bg{
-0%{background-image:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6");}
-50%{background-image:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2");}
-100%{background-image:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),url("https://images.unsplash.com/photo-1522778119026-d647f0596c20");}
+.card {
+  background:#132f4c;
+  margin:10px;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
 }
 
-/* الهيدر */
-header{
-text-align:center;
-padding:15px;
-font-size:24px;
-background:#0f172a;
-font-weight:bold;
-box-shadow:0 0 10px black;
+iframe {
+  width:100%;
+  height:200px;
+  border:none;
+  margin-top:10px;
 }
 
-/* الأزرار */
-.buttons{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-padding:10px;
+.nav {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#111;
+  display:flex;
+  justify-content:space-around;
+  padding:10px;
 }
 
-button{
-background:#2563eb;
-border:none;
-padding:10px 15px;
-border-radius:12px;
-color:white;
-cursor:pointer;
-font-weight:bold;
+.nav button {
+  background:none;
+  border:none;
+  color:white;
+  font-size:14px;
 }
 
-button:hover{
-background:#1d4ed8;
-}
-
-/* البحث */
-.search{
-text-align:center;
-margin:10px;
-}
-
-input{
-width:80%;
-padding:10px;
-border-radius:10px;
-border:none;
-}
-
-/* المحتوى */
-#content{
-padding:10px;
-}
-
-/* كارد */
-.card{
-background:rgba(30,41,59,.9);
-padding:10px;
-margin:10px 0;
-border-radius:15px;
-box-shadow:0 0 10px rgba(0,0,0,.7);
-transition:.3s;
-}
-
-.card:hover{
-transform:scale(1.02);
-}
-
-/* فيديو */
-iframe{
-width:100%;
-height:200px;
-border-radius:10px;
-margin-top:10px;
-}
-
-/* LIVE */
-.live{
-background:red;
-padding:3px 8px;
-border-radius:8px;
-font-size:12px;
-}
-
-/* ترتيب */
-.team{
-display:flex;
-justify-content:space-between;
-background:#111827;
-padding:10px;
-margin:5px 0;
-border-radius:10px;
-}
+.page {display:none;}
+.active {display:block;}
 </style>
-
 </head>
 
 <body>
 
-<header>⚽ Football Pro MAX</header>
+<div class="header">⚽ Football Live</div>
 
-<div class="buttons">
-<button onclick="showAll()">🏆 الكل</button>
-<button onclick="showUCL()">🔥 الأبطال</button>
-<button onclick="showSpain()">🇪🇸 اسباني</button>
-<button onclick="showEngland()">🏴 انجليزي</button>
-<button onclick="showLive()">🔴 مباشر</button>
-<button onclick="showTable()">📊 ترتيب</button>
+<!-- MATCHES -->
+<div id="matches" class="page active">
+
+  <div class="card" onclick="playVideo('https://www.youtube.com/embed/aqz-KE-bpKQ')">
+    🔴 برشلونة vs ريال مدريد (اضغط للمشاهدة)
+  </div>
+
+  <div class="card" onclick="playVideo('https://www.youtube.com/embed/5qap5aO4i9A')">
+    مانشستر سيتي vs ليفربول
+  </div>
+
+  <div id="player"></div>
+
 </div>
 
-<div class="search">
-<input type="text" placeholder="🔎 ابحث عن فريق..." oninput="searchMatch(this.value)">
+<!-- NEWS -->
+<div id="news" class="page">
+  <div class="card">🔥 فوز ريال مدريد 3-1</div>
+  <div class="card">⚽ صفقة جديدة لبرشلونة</div>
 </div>
 
-<div id="content">⏳ جاري التحميل...</div>
+<!-- TABLE -->
+<div id="table" class="page">
+  <div class="card">🥇 ريال مدريد - 75 نقطة</div>
+  <div class="card">🥈 برشلونة - 70 نقطة</div>
+  <div class="card">🥉 مانشستر سيتي - 68 نقطة</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button onclick="showPage('matches')">⚽ مباريات</button>
+  <button onclick="showPage('news')">📰 أخبار</button>
+  <button onclick="showPage('table')">📊 ترتيب</button>
+</div>
 
 <script>
-
-let DATA = [];
-let FILTERED = [];
-
-/* جلب البيانات */
-async function load(){
-let res = await fetch("https://www.scorebat.com/video-api/v3/");
-let data = await res.json();
-
-let used = new Set();
-
-DATA = data.response.filter(m=>{
-let v = m.videos[0]?.embed;
-if(!v || used.has(v)) return false;
-used.add(v);
-return true;
-});
-
-FILTERED = DATA;
-render();
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
 }
 
-/* عرض */
-function render(){
-let html = "";
-
-FILTERED.slice(0,30).forEach(m=>{
-html += `
-<div class="card">
-<h3>${m.title}</h3>
-<p>${m.competition}</p>
-${m.videos[0].embed}
-</div>`;
-});
-
-document.getElementById("content").innerHTML = html;
+function playVideo(url) {
+  document.getElementById("player").innerHTML =
+    `<iframe src="${url}" allowfullscreen></iframe>`;
 }
-
-/* فلترة */
-function showAll(){ FILTERED = DATA; render(); }
-
-function showUCL(){
-FILTERED = DATA.filter(m=>m.competition.includes("Champions"));
-render();
-}
-
-function showSpain(){
-FILTERED = DATA.filter(m=>m.competition.toLowerCase().includes("spain"));
-render();
-}
-
-function showEngland(){
-FILTERED = DATA.filter(m=>m.competition.toLowerCase().includes("england") || m.competition.toLowerCase().includes("premier"));
-render();
-}
-
-function showLive(){
-let html = "<h2>🔴 مباشر</h2>";
-DATA.slice(0,10).forEach(m=>{
-html += `<div class="card"><span class="live">LIVE</span><h3>${m.title}</h3></div>`;
-});
-document.getElementById("content").innerHTML = html;
-}
-
-/* بحث */
-function searchMatch(q){
-q = q.toLowerCase();
-FILTERED = DATA.filter(m=>m.title.toLowerCase().includes(q));
-render();
-}
-
-/* ترتيب */
-function showTable(){
-let teams = [
-{name:"Manchester City", pts:80},
-{name:"Liverpool", pts:78},
-{name:"Real Madrid", pts:75},
-{name:"Bayern Munich", pts:76},
-{name:"Barcelona", pts:70}
-];
-
-teams.sort((a,b)=>b.pts-a.pts);
-
-let html = "<h2>📊 ترتيب الفرق</h2>";
-
-teams.forEach((t,i)=>{
-html += `<div class="team"><span>${i+1}. ${t.name}</span><span>${t.pts}</span></div>`;
-});
-
-document.getElementById("content").innerHTML = html;
-}
-
-/* تشغيل */
-load();
-
 </script>
 
 </body>
