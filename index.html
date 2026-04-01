@@ -7,119 +7,47 @@
 
 <style>
 body{
-margin:0;
-font-family:Arial;
-color:white;
-overflow-x:hidden;
+  margin:0;
+  font-family:Arial;
+  background:#0b1220;
+  color:white;
 }
 
-/* خلفية احترافية متحركة */
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-z-index:-1;
-background-size:cover;
-background-position:center;
-animation:bg 25s infinite;
+.header{
+  background:#0f172a;
+  padding:15px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
 }
 
-@keyframes bg{
-0%{background-image:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6");}
-50%{background-image:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2");}
-100%{background-image:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.9)),url("https://images.unsplash.com/photo-1522778119026-d647f0596c20");}
-}
-
-/* الهيدر */
-header{
-text-align:center;
-padding:15px;
-font-size:24px;
-background:#0f172a;
-font-weight:bold;
-box-shadow:0 0 10px black;
-}
-
-/* الأزرار */
 .buttons{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-padding:10px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  padding:15px;
 }
 
-button{
-background:#2563eb;
-border:none;
-padding:10px 15px;
-border-radius:12px;
-color:white;
-cursor:pointer;
-font-weight:bold;
+.btn{
+  background:#2563eb;
+  padding:10px 15px;
+  border-radius:10px;
 }
 
-button:hover{
-background:#1d4ed8;
-}
-
-/* البحث */
 .search{
-text-align:center;
-margin:10px;
+  padding:10px;
+  margin:10px;
+  width:90%;
+  border-radius:10px;
+  border:none;
 }
 
-input{
-width:80%;
-padding:10px;
-border-radius:10px;
-border:none;
-}
-
-/* المحتوى */
-#content{
-padding:10px;
-}
-
-/* كارد */
-.card{
-background:rgba(30,41,59,.9);
-padding:10px;
-margin:10px 0;
-border-radius:15px;
-box-shadow:0 0 10px rgba(0,0,0,.7);
-transition:.3s;
-}
-
-.card:hover{
-transform:scale(1.02);
-}
-
-/* فيديو */
-iframe{
-width:100%;
-height:200px;
-border-radius:10px;
-margin-top:10px;
-}
-
-/* LIVE */
-.live{
-background:red;
-padding:3px 8px;
-border-radius:8px;
-font-size:12px;
-}
-
-/* ترتيب */
-.team{
-display:flex;
-justify-content:space-between;
-background:#111827;
-padding:10px;
-margin:5px 0;
-border-radius:10px;
+.match{
+  background:#1e293b;
+  margin:10px;
+  padding:15px;
+  border-radius:12px;
 }
 </style>
 
@@ -127,119 +55,50 @@ border-radius:10px;
 
 <body>
 
-<header>⚽ Football Pro MAX</header>
+<div class="header">⚽ Football Pro MAX</div>
 
 <div class="buttons">
-<button onclick="showAll()">🏆 الكل</button>
-<button onclick="showUCL()">🔥 الأبطال</button>
-<button onclick="showSpain()">🇪🇸 اسباني</button>
-<button onclick="showEngland()">🏴 انجليزي</button>
-<button onclick="showLive()">🔴 مباشر</button>
-<button onclick="showTable()">📊 ترتيب</button>
+  <div class="btn">🏆 الكل</div>
+  <div class="btn">🔥 الأبطال</div>
+  <div class="btn">🇪🇸 اسباني</div>
+  <div class="btn">🏴 انجليزي</div>
+  <div class="btn">🔴 مباشر</div>
+  <div class="btn">📊 ترتيب</div>
 </div>
 
-<div class="search">
-<input type="text" placeholder="🔎 ابحث عن فريق..." oninput="searchMatch(this.value)">
-</div>
+<input class="search" placeholder="🔎 ابحث عن فريق...">
 
-<div id="content">⏳ جاري التحميل...</div>
+<!-- 🔥 هنا راح تظهر المباريات -->
+<div id="liveMatches"></div>
 
 <script>
+async function loadMatches() {
+  const res = await fetch('https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all', {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': 'c14437f142msh2ab622a3c1b4063p12663ajsna8e3f9e211d5',
+      'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+    }
+  });
 
-let DATA = [];
-let FILTERED = [];
+  const data = await res.json();
+  const matches = data.response;
 
-/* جلب البيانات */
-async function load(){
-let res = await fetch("https://www.scorebat.com/video-api/v3/");
-let data = await res.json();
+  const container = document.getElementById("liveMatches");
+  container.innerHTML = "";
 
-let used = new Set();
-
-DATA = data.response.filter(m=>{
-let v = m.videos[0]?.embed;
-if(!v || used.has(v)) return false;
-used.add(v);
-return true;
-});
-
-FILTERED = DATA;
-render();
+  matches.forEach(match => {
+    container.innerHTML += `
+      <div class="match">
+        <h3>${match.teams.home.name} 🆚 ${match.teams.away.name}</h3>
+        <p>⏱ ${match.fixture.status.elapsed || 0} دقيقة</p>
+        <p>🏆 ${match.league.name}</p>
+      </div>
+    `;
+  });
 }
 
-/* عرض */
-function render(){
-let html = "";
-
-FILTERED.slice(0,30).forEach(m=>{
-html += `
-<div class="card">
-<h3>${m.title}</h3>
-<p>${m.competition}</p>
-${m.videos[0].embed}
-</div>`;
-});
-
-document.getElementById("content").innerHTML = html;
-}
-
-/* فلترة */
-function showAll(){ FILTERED = DATA; render(); }
-
-function showUCL(){
-FILTERED = DATA.filter(m=>m.competition.includes("Champions"));
-render();
-}
-
-function showSpain(){
-FILTERED = DATA.filter(m=>m.competition.toLowerCase().includes("spain"));
-render();
-}
-
-function showEngland(){
-FILTERED = DATA.filter(m=>m.competition.toLowerCase().includes("england") || m.competition.toLowerCase().includes("premier"));
-render();
-}
-
-function showLive(){
-let html = "<h2>🔴 مباشر</h2>";
-DATA.slice(0,10).forEach(m=>{
-html += `<div class="card"><span class="live">LIVE</span><h3>${m.title}</h3></div>`;
-});
-document.getElementById("content").innerHTML = html;
-}
-
-/* بحث */
-function searchMatch(q){
-q = q.toLowerCase();
-FILTERED = DATA.filter(m=>m.title.toLowerCase().includes(q));
-render();
-}
-
-/* ترتيب */
-function showTable(){
-let teams = [
-{name:"Manchester City", pts:80},
-{name:"Liverpool", pts:78},
-{name:"Real Madrid", pts:75},
-{name:"Bayern Munich", pts:76},
-{name:"Barcelona", pts:70}
-];
-
-teams.sort((a,b)=>b.pts-a.pts);
-
-let html = "<h2>📊 ترتيب الفرق</h2>";
-
-teams.forEach((t,i)=>{
-html += `<div class="team"><span>${i+1}. ${t.name}</span><span>${t.pts}</span></div>`;
-});
-
-document.getElementById("content").innerHTML = html;
-}
-
-/* تشغيل */
-load();
-
+loadMatches();
 </script>
 
 </body>
