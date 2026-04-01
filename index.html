@@ -9,52 +9,51 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0f172a;
+background:#0b1a2f;
 color:white;
 text-align:center;
 }
 
-h1{padding:15px;}
+h1{
+padding:15px;
+}
 
 .buttons{
 display:flex;
-flex-wrap:wrap;
 justify-content:center;
 gap:10px;
-margin:10px;
+flex-wrap:wrap;
 }
 
 button{
-background:#2563eb;
+background:#2e5bff;
 border:none;
-padding:12px 18px;
-border-radius:12px;
+padding:10px 15px;
+border-radius:10px;
 color:white;
 font-size:16px;
-cursor:pointer;
 }
 
 input{
 width:90%;
 padding:12px;
+margin:15px;
 border-radius:10px;
 border:none;
-margin:10px;
 }
 
 .card{
-background:#1e293b;
+background:#1e2b45;
 margin:10px;
 padding:15px;
 border-radius:15px;
-text-align:right;
 }
 
 iframe{
 width:100%;
 height:200px;
-border:none;
 border-radius:10px;
+border:none;
 }
 </style>
 </head>
@@ -64,93 +63,77 @@ border-radius:10px;
 <h1>⚽ Football Pro MAX</h1>
 
 <div class="buttons">
-<button onclick="today()">📅 اليوم</button>
-<button onclick="yesterday()">📅 الأمس</button>
-<button onclick="standings()">📊 الترتيب</button>
-<button onclick="videos()">🎬 أهداف</button>
+<button onclick="loadLive()">🔴 مباشر</button>
+<button onclick="loadYesterday()">📅 مباريات الأمس</button>
+<button onclick="loadVideos()">🎬 أهداف</button>
 </div>
 
-<input type="text" id="search" placeholder="🔍 ابحث عن فريق..." onkeyup="searchTeam()">
+<input type="text" placeholder="🔎 ابحث عن فريق..." onkeyup="searchTeam()" id="search">
 
-<div id="content">⏳ جاري التحميل...</div>
+<div id="content"></div>
 
 <script>
 
-const KEY = "e861dd443e7485299d0ec782cb1e6de1"
+// 🔥 حط مفتاحك هنا
+const API_KEY = "e861dd443e7485299d0ec782cb1e6de1";
 
-// 🔥 مهم (Proxy)
-const BASE = "https://corsproxy.io/?https://v3.football.api-sports.io";
+// ================= مباريات اليوم =================
+async function loadLive(){
 
-// 📅 اليوم
-async function today(){
-load("fixtures?date=2026-04-01");
+let res = await fetch("https://sportsrc.org/v2/football/matches?live=true",{
+headers:{
+"x-api-key": API_KEY
 }
-
-// 📅 الأمس
-async function yesterday(){
-load("fixtures?date=2026-03-31");
-}
-
-// 📊 ترتيب
-async function standings(){
-
-let res = await fetch(BASE + "/standings?league=39&season=2024",{
-headers:{ "x-apisports-key": KEY }
 });
 
 let data = await res.json();
 
-let html = "";
-
-data.response[0].league.standings[0].forEach(t=>{
-
-html += `
-<div class="card">
-🏆 ${t.rank} - ${t.team.name}
-<br>📊 ${t.points} نقطة
-</div>
-`;
-
-});
-
-document.getElementById("content").innerHTML = html;
+showMatches(data.data);
 }
 
-// ⚽ تحميل مباريات
-async function load(endpoint){
+// ================= مباريات الأمس =================
+async function loadYesterday(){
 
-document.getElementById("content").innerHTML = "⏳ جاري التحميل...";
-
-let res = await fetch(BASE + "/" + endpoint,{
-headers:{ "x-apisports-key": KEY }
+let res = await fetch("https://sportsrc.org/v2/football/matches?yesterday=true",{
+headers:{
+"x-api-key": API_KEY
+}
 });
 
 let data = await res.json();
 
+showMatches(data.data);
+}
+
+// ================= عرض المباريات =================
+function showMatches(matches){
+
 let html = "";
 
-data.response.slice(0,20).forEach(m=>{
+if(!matches || matches.length == 0){
+html = "<p>❌ ماكو مباريات</p>";
+}else{
 
+matches.forEach(m=>{
 html += `
 <div class="card">
-<h3>${m.teams.home.name} 🆚 ${m.teams.away.name}</h3>
-<p>🏆 ${m.league.name}</p>
-<p>⏱ ${m.fixture.status.elapsed || "لم تبدأ"}</p>
-<p>📊 ${m.goals.home ?? "-"} : ${m.goals.away ?? "-"}</p>
+<h3>${m.homeTeam.name} 🆚 ${m.awayTeam.name}</h3>
+<p>${m.league.name}</p>
+<p>📊 ${m.score.fullTime.home} - ${m.score.fullTime.away}</p>
 </div>
 `;
-
 });
+}
 
 document.getElementById("content").innerHTML = html;
 }
 
-// 🎬 أهداف
-function videos(){
+// ================= فيديوهات =================
+function loadVideos(){
+
 document.getElementById("content").innerHTML = `
-
 <div class="card">
-<h3>🔥 أهداف مباريات</h3>
+<h3>🔥 أهداف اليوم</h3>
 <iframe src="https://www.youtube.com/embed/3fumBcKC6RE"></iframe>
 </div>
 
@@ -158,12 +141,12 @@ document.getElementById("content").innerHTML = `
 <h3>⚽ ملخص مباريات</h3>
 <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
 </div>
-
 `;
 }
 
-// 🔍 بحث
+// ================= بحث =================
 function searchTeam(){
+
 let input = document.getElementById("search").value.toLowerCase();
 let cards = document.querySelectorAll(".card");
 
@@ -173,7 +156,7 @@ card.style.display = card.innerText.toLowerCase().includes(input) ? "block" : "n
 }
 
 // تشغيل أولي
-today();
+loadLive();
 
 </script>
 
