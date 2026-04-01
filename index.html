@@ -1,121 +1,108 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Football Pro MAX</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0f172a;
-  color:white;
-}
-
-/* الهيدر */
-.header{
-  background:#0b132b;
-  padding:15px;
-  text-align:center;
-  font-size:22px;
-  font-weight:bold;
-}
-
-/* الأزرار */
-.buttons{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:10px;
-  padding:15px;
-}
-
-.btn{
-  background:#2563eb;
-  padding:10px 15px;
-  border-radius:10px;
-}
-
-/* البحث */
-.search{
-  margin:10px;
-  padding:10px;
-  width:90%;
-  border-radius:10px;
-  border:none;
-  display:block;
-  margin-left:auto;
-  margin-right:auto;
-}
-
-/* الكروت */
-.match{
-  background:#1e293b;
-  margin:10px;
-  padding:15px;
-  border-radius:12px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">⚽ Football Pro MAX</div>
-
-<div class="buttons">
-  <div class="btn">🏆 الكل</div>
-  <div class="btn">🔥 الأبطال</div>
-  <div class="btn">🇪🇸 اسباني</div>
-  <div class="btn">🏴 انجليزي</div>
-  <div class="btn">🔴 مباشر</div>
-  <div class="btn">📊 ترتيب</div>
-</div>
-
-<input class="search" placeholder="🔍 ابحث عن فريق...">
-
-<!-- هنا راح تنعرض المباريات -->
-<div id="apiMatches"></div>
-
 <script>
-async function loadRealMatches() {
-  try {
-    const res = await fetch('https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all', {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': 'c14437f142msh2ab622a3c1b4063p12663ajsna8e3f9e211d5',
-        'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-      }
-    });
+const API_KEY = "c14437f142msh2ab622a3c1b4063p12663ajsna8e3f9e211d5"
 
-    const data = await res.json();
-    const matches = data.response;
-
-    const container = document.getElementById("apiMatches");
-    container.innerHTML = "";
-
-    if (!matches || matches.length === 0) {
-      container.innerHTML = "<p style='text-align:center'>ماكو مباريات حالياً</p>";
-      return;
+/* =========================
+   1. المباريات المباشرة
+========================= */
+async function loadLiveMatches() {
+  const res = await fetch('https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all', {
+    headers: {
+      'X-RapidAPI-Key': API_KEY,
+      'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
     }
+  });
 
-    matches.forEach(match => {
-      container.innerHTML += `
-        <div class="match">
-          <h3>${match.teams.home.name} 🆚 ${match.teams.away.name}</h3>
-          <p>${match.league.name}</p>
-          <p>⏱ ${match.fixture.status.elapsed || 0} دقيقة</p>
-        </div>
-      `;
-    });
+  const data = await res.json();
+  const matches = data.response;
 
-  } catch (e) {
-    console.log(e);
-  }
+  const container = document.getElementById("liveMatches");
+  container.innerHTML = "<h2>🔴 مباشر</h2>";
+
+  matches.forEach(match => {
+    container.innerHTML += matchCard(match);
+  });
 }
 
-loadRealMatches();
-</script>
+/* =========================
+   2. مباريات البارحة
+========================= */
+async function loadYesterday() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const date = yesterday.toISOString().split('T')[0];
 
-</body>
-</html>
+  const res = await fetch(`https://api-football-v1.p.rapidapi.com/v3/fixtures?date=${date}`, {
+    headers: {
+      'X-RapidAPI-Key': API_KEY,
+      'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+    }
+  });
+
+  const data = await res.json();
+  const matches = data.response;
+
+  const container = document.getElementById("yesterdayMatches");
+  container.innerHTML = "<h2>📅 مباريات البارحة</h2>";
+
+  matches.slice(0,10).forEach(match => {
+    container.innerHTML += matchCard(match);
+  });
+}
+
+/* =========================
+   3. فيديو الأهداف (مجاني)
+========================= */
+async function loadVideos() {
+  const res = await fetch("https://www.scorebat.com/video-api/v3/");
+  const data = await res.json();
+
+  const container = document.getElementById("videos");
+  container.innerHTML = "<h2>🎥 أهداف المباريات</h2>";
+
+  data.response.slice(0,5).forEach(video => {
+    container.innerHTML += `
+      <div style="margin:10px;background:#1e293b;padding:10px;border-radius:10px">
+        <p>${video.title}</p>
+        ${video.videos[0].embed}
+      </div>
+    `;
+  });
+}
+
+/* =========================
+   كارت المباراة
+========================= */
+function matchCard(match){
+  return `
+    <div style="background:#1e293b;margin:10px;padding:15px;border-radius:15px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+
+        <div style="text-align:center">
+          <img src="${match.teams.home.logo}" width="40"><br>
+          <small>${match.teams.home.name}</small>
+        </div>
+
+        <div style="text-align:center">
+          <h3>${match.goals.home ?? 0} - ${match.goals.away ?? 0}</h3>
+          <small>${match.fixture.status.short}</small>
+        </div>
+
+        <div style="text-align:center">
+          <img src="${match.teams.away.logo}" width="40"><br>
+          <small>${match.teams.away.name}</small>
+        </div>
+
+      </div>
+
+      <p style="text-align:center;color:#aaa">${match.league.name}</p>
+    </div>
+  `;
+}
+
+/* =========================
+   تشغيل الكل
+========================= */
+loadLiveMatches();
+loadYesterday();
+loadVideos();
+</script>
