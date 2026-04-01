@@ -7,170 +7,192 @@
 
 <style>
 body{
-margin:0;
-font-family:Arial;
-background:#0b1b2b;
-color:white;
+    margin:0;
+    font-family:Arial;
+    background:#0b1220;
+    color:white;
+    text-align:center;
 }
 
-header{
-text-align:center;
-padding:15px;
-font-size:22px;
-font-weight:bold;
-background:#0f2a44;
+h1{
+    padding:15px;
 }
 
 .buttons{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-padding:10px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
 }
 
 button{
-background:#2d6cdf;
-border:none;
-color:white;
-padding:10px 15px;
-border-radius:10px;
-cursor:pointer;
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
 }
 
-.search{
-margin:10px;
-}
-
-.search input{
-width:100%;
-padding:10px;
-border-radius:10px;
-border:none;
+input{
+    width:90%;
+    padding:12px;
+    margin:15px 0;
+    border-radius:10px;
+    border:none;
 }
 
 .card{
-background:#1e293b;
-margin:10px;
-padding:10px;
-border-radius:15px;
+    background:#1e293b;
+    margin:15px;
+    padding:10px;
+    border-radius:15px;
 }
 
 iframe{
-width:100%;
-height:200px;
-border-radius:10px;
-border:none;
+    width:100%;
+    height:200px;
+    border:none;
+    border-radius:10px;
 }
 </style>
+
 </head>
 
 <body>
 
-<header>⚽ Football Pro MAX</header>
+<h1>⚽ Football Pro MAX</h1>
 
 <div class="buttons">
-<button onclick="loadMatches()">🏆 الكل</button>
-<button onclick="loadMatches('39')">🏴 إنجليزي</button>
-<button onclick="loadMatches('140')">🇪🇸 إسباني</button>
 <button onclick="loadLive()">🔴 مباشر</button>
-<button onclick="loadHighlights()">🎥 أهداف</button>
+<button onclick="loadYesterday()">📅 مباريات الأمس</button>
+<button onclick="loadVideos()">🎥 أهداف</button>
 </div>
 
-<div class="search">
-<input type="text" id="search" placeholder="ابحث عن فريق..." onkeyup="searchTeam()">
-</div>
+<input type="text" id="search" placeholder="🔎 ابحث عن فريق..." onkeyup="searchTeam()">
 
-<div id="content"></div>
+<div id="content">⏳ جاري التحميل...</div>
 
 <script>
 
-const API_KEY = "c14437f142msh2ab622a3c1b4063p12663ajsna8e3f9e211d5"; // ← حط مفتاحك هنا
+// 🔥 حط مفتاحك هنا
+const API_KEY = "c14437f142msh2ab622a3c1b4063p12663ajsna8e3f9e211d5"
 
-// تحميل المباريات
-async function loadMatches(league=""){
-let url = "https://api-football-v1.p.rapidapi.com/v3/fixtures?season=2025";
-
-if(league){
-url += "&league="+league;
-}
-
-const res = await fetch(url,{
-headers:{
-"x-rapidapi-key":API_KEY,
-"x-rapidapi-host":"api-football-v1.p.rapidapi.com"
-}
-});
-
-const data = await res.json();
-showMatches(data.response);
-}
-
-// عرض المباريات
-function showMatches(matches){
-let html = "";
-
-matches.slice(0,20).forEach(match=>{
-html += `
-<div class="card">
-<h3>${match.teams.home.name} vs ${match.teams.away.name}</h3>
-<p>${match.league.name}</p>
-<p>⏱ ${match.fixture.status.elapsed || "لم تبدأ"}</p>
-</div>
-`;
-});
-
-document.getElementById("content").innerHTML = html || "ماكو مباريات حالياً";
-}
-
-// المباريات المباشرة
+// ================== مباريات مباشرة ==================
 async function loadLive(){
-const res = await fetch("https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all",{
-headers:{
-"x-rapidapi-key":API_KEY,
-"x-rapidapi-host":"api-football-v1.p.rapidapi.com"
+    document.getElementById("content").innerHTML = "⏳ جاري تحميل المباريات...";
+
+    try{
+        let res = await fetch("https://v3.football.api-sports.io/fixtures?live=all",{
+            headers:{
+                "x-apisports-key": API_KEY
+            }
+        });
+
+        let data = await res.json();
+        let matches = data.response;
+
+        if(matches.length === 0){
+            document.getElementById("content").innerHTML = "❌ ماكو مباريات مباشرة";
+            return;
+        }
+
+        let html = "";
+
+        matches.forEach(m=>{
+            html += `
+            <div class="card">
+                <h3>${m.teams.home.name} 🆚 ${m.teams.away.name}</h3>
+                <p>${m.league.name}</p>
+                <p>⏱ ${m.fixture.status.elapsed}'</p>
+            </div>
+            `;
+        });
+
+        document.getElementById("content").innerHTML = html;
+
+    }catch(e){
+        document.getElementById("content").innerHTML = "❌ خطأ بالاتصال";
+    }
 }
-});
 
-const data = await res.json();
-showMatches(data.response);
+// ================== مباريات الأمس ==================
+async function loadYesterday(){
+    document.getElementById("content").innerHTML = "⏳ جاري التحميل...";
+
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate()-1);
+    let date = yesterday.toISOString().split("T")[0];
+
+    try{
+        let res = await fetch(`https://v3.football.api-sports.io/fixtures?date=${date}`,{
+            headers:{
+                "x-apisports-key": API_KEY
+            }
+        });
+
+        let data = await res.json();
+
+        let html = "";
+
+        data.response.slice(0,10).forEach(m=>{
+            html += `
+            <div class="card">
+                <h3>${m.teams.home.name} ${m.goals.home} - ${m.goals.away} ${m.teams.away.name}</h3>
+                <p>${m.league.name}</p>
+            </div>
+            `;
+        });
+
+        document.getElementById("content").innerHTML = html;
+
+    }catch{
+        document.getElementById("content").innerHTML = "❌ خطأ";
+    }
 }
 
-// فيديوهات الأهداف (ScoreBat مجاني)
-async function loadHighlights(){
-const res = await fetch("https://www.scorebat.com/video-api/v3/");
-const data = await res.json();
+// ================== فيديوهات ==================
+async function loadVideos(){
+    document.getElementById("content").innerHTML = "⏳ جاري تحميل الفيديوهات...";
 
-let html = "";
+    try{
+        let res = await fetch("https://www.scorebat.com/video-api/v3/");
+        let data = await res.json();
 
-data.response.slice(0,10).forEach(v=>{
-html += `
-<div class="card">
-<h3>${v.title}</h3>
-<iframe src="${v.embed}"></iframe>
-</div>
-`;
-});
+        let html = "";
 
-document.getElementById("content").innerHTML = html;
+        data.response.slice(0,10).forEach(v=>{
+            html += `
+            <div class="card">
+                <h3>${v.title}</h3>
+                ${v.embed}
+            </div>
+            `;
+        });
+
+        document.getElementById("content").innerHTML = html;
+
+    }catch{
+        document.getElementById("content").innerHTML = "❌ ماكو فيديوهات";
+    }
 }
 
-// البحث
+// ================== البحث ==================
 function searchTeam(){
-let input = document.getElementById("search").value.toLowerCase();
-let cards = document.querySelectorAll(".card");
+    let input = document.getElementById("search").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
 
-cards.forEach(card=>{
-if(card.innerText.toLowerCase().includes(input)){
-card.style.display="block";
-}else{
-card.style.display="none";
-}
-});
+    cards.forEach(card=>{
+        if(card.innerText.toLowerCase().includes(input)){
+            card.style.display="block";
+        }else{
+            card.style.display="none";
+        }
+    });
 }
 
 // تشغيل أولي
-loadMatches();
+loadVideos();
 
 </script>
 
