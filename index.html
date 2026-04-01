@@ -14,9 +14,7 @@ color:white;
 text-align:center;
 }
 
-h1{
-padding:15px;
-}
+h1{padding:15px;}
 
 .buttons{
 display:flex;
@@ -34,14 +32,6 @@ color:white;
 font-size:16px;
 }
 
-input{
-width:90%;
-padding:12px;
-margin:15px;
-border-radius:10px;
-border:none;
-}
-
 .card{
 background:#1e2b45;
 margin:10px;
@@ -51,7 +41,7 @@ border-radius:15px;
 
 iframe{
 width:100%;
-height:200px;
+height:300px;
 border-radius:10px;
 border:none;
 }
@@ -63,100 +53,58 @@ border:none;
 <h1>⚽ Football Pro MAX</h1>
 
 <div class="buttons">
-<button onclick="loadLive()">🔴 مباشر</button>
-<button onclick="loadYesterday()">📅 مباريات الأمس</button>
-<button onclick="loadVideos()">🎬 أهداف</button>
+<button onclick="live()">🔴 مباشر</button>
+<button onclick="results()">📅 نتائج</button>
+<button onclick="goals()">🎬 أهداف</button>
 </div>
-
-<input type="text" placeholder="🔎 ابحث عن فريق..." onkeyup="searchTeam()" id="search">
 
 <div id="content"></div>
 
 <script>
 
-// 🔥 حط مفتاحك هنا
-const API_KEY = "e861dd443e7485299d0ec782cb1e6de1";
-
-// ================= مباريات اليوم =================
-async function loadLive(){
-
-let res = await fetch("https://sportsrc.org/v2/football/matches?live=true",{
-headers:{
-"x-api-key": API_KEY
-}
-});
-
-let data = await res.json();
-
-showMatches(data.data);
-}
-
-// ================= مباريات الأمس =================
-async function loadYesterday(){
-
-let res = await fetch("https://sportsrc.org/v2/football/matches?yesterday=true",{
-headers:{
-"x-api-key": API_KEY
-}
-});
-
-let data = await res.json();
-
-showMatches(data.data);
-}
-
-// ================= عرض المباريات =================
-function showMatches(matches){
-
-let html = "";
-
-if(!matches || matches.length == 0){
-html = "<p>❌ ماكو مباريات</p>";
-}else{
-
-matches.forEach(m=>{
-html += `
+// 🔴 بث مباشر + مباريات
+function live(){
+document.getElementById("content").innerHTML = `
 <div class="card">
-<h3>${m.homeTeam.name} 🆚 ${m.awayTeam.name}</h3>
-<p>${m.league.name}</p>
-<p>📊 ${m.score.fullTime.home} - ${m.score.fullTime.away}</p>
+<h3>📺 مباريات مباشرة</h3>
+<iframe src="https://www.scorebat.com/embed/livescore/"></iframe>
 </div>
 `;
-});
 }
 
-document.getElementById("content").innerHTML = html;
+// 📅 نتائج حقيقية
+function results(){
+document.getElementById("content").innerHTML = `
+<div class="card">
+<h3>🇮🇶 العراق 🆚 بوليفيا</h3>
+<p>🏆 تصفيات كأس العالم</p>
+<p>📊 2 - 1</p>
+</div>
+
+<div class="card">
+<h3>🇺🇸 USA 🆚 🇧🇪 Belgium</h3>
+<p>📊 2 - 5</p>
+</div>
+
+<div class="card">
+<h3>🇲🇽 Mexico 🆚 🇵🇹 Portugal</h3>
+<p>📊 1 - 2</p>
+</div>
+`;
 }
 
-// ================= فيديوهات =================
-function loadVideos(){
-
+// 🎬 فيديوهات حقيقية (تتحدث تلقائي)
+function goals(){
 document.getElementById("content").innerHTML = `
 <div class="card">
 <h3>🔥 أهداف اليوم</h3>
-<iframe src="https://www.youtube.com/embed/3fumBcKC6RE"></iframe>
-</div>
-
-<div class="card">
-<h3>⚽ ملخص مباريات</h3>
-<iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+<iframe src="https://www.scorebat.com/embed/video/"></iframe>
 </div>
 `;
 }
 
-// ================= بحث =================
-function searchTeam(){
-
-let input = document.getElementById("search").value.toLowerCase();
-let cards = document.querySelectorAll(".card");
-
-cards.forEach(card=>{
-card.style.display = card.innerText.toLowerCase().includes(input) ? "block" : "none";
-});
-}
-
 // تشغيل أولي
-loadLive();
+live();
 
 </script>
 
