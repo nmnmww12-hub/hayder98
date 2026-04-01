@@ -1,71 +1,193 @@
-<script>
-    // بيانات مباريات اليوم الحقيقية (1 نيسان 2026)
-    const todayMatches = [
-        { 
-            home: "ريال مدريد", 
-            away: "مانشستر سيتي", 
-            score: "2 - 1", 
-            status: "مباشر '75", 
-            league: "دوري أبطال أوروبا (ذهاب ربع النهائي)",
-            logoH: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png", 
-            logoA: "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png" 
-        },
-        { 
-            home: "برشلونة", 
-            away: "بايرن ميونخ", 
-            score: "0 - 0", 
-            status: "22:00", 
-            league: "دوري أبطال أوروبا (ذهاب ربع النهائي)",
-            logoH: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_logo.svg/1200px-FC_Barcelona_logo.svg.png", 
-            logoA: "https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/1200px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png" 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Pro MAX 2026</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #050c16;
+            --card: #0b1e33;
+            --accent: #00d4ff;
+            --gold: #ffcc00;
+            --white: #ffffff;
         }
-    ];
 
-    function renderMatches() {
-        const container = document.getElementById('api-matches-container') || document.getElementById('matches-list');
-        if (!container) return;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); color: var(--white); display: flex; height: 100vh; overflow: hidden; }
 
-        container.innerHTML = todayMatches.map(m => `
-            <div class="match-card" style="margin-bottom: 15px; background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px;">
-                <div style="text-align: center; font-size: 0.7rem; color: #00d4ff; margin-bottom: 10px;">${m.league}</div>
-                <div style="display: grid; grid-template-columns: 1fr 100px 1fr; align-items: center;">
-                    <div class="team" style="text-align: center;">
-                        <img src="${m.logoH}" style="width: 50px; height: 50px; object-fit: contain;">
-                        <p style="font-weight: bold; margin-top: 5px;">${m.home}</p>
+        /* القائمة الجانبية */
+        aside {
+            width: 70px; background: var(--card); display: flex; flex-direction: column;
+            align-items: center; padding: 20px 0; border-left: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-link {
+            color: #888; font-size: 1.3rem; margin-bottom: 30px; cursor: pointer;
+            padding: 12px; border-radius: 15px; transition: 0.3s;
+        }
+        .nav-link.active { background: rgba(0, 212, 255, 0.1); color: var(--accent); }
+
+        /* المحتوى الرئيسي */
+        main { flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        header {
+            padding: 20px 30px; background: rgba(11, 30, 51, 0.8);
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .search-box { background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; }
+        .search-box input { background: none; border: none; color: white; outline: none; width: 120px; }
+
+        /* البطاقات */
+        .container { padding: 20px; max-width: 900px; margin: 0 auto; }
+        .section-title { font-size: 1.4rem; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; border-right: 4px solid var(--accent); padding-right: 15px; }
+        
+        .match-card {
+            background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px;
+            display: grid; grid-template-columns: 1fr 120px 1fr; align-items: center;
+            border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .team { text-align: center; }
+        .team img { width: 55px; height: 55px; object-fit: contain; margin-bottom: 10px; }
+        .score-box { text-align: center; }
+        .score-num { font-size: 2rem; font-weight: 900; color: var(--accent); }
+        .live-tag { color: #ff4b2b; font-size: 0.8rem; font-weight: bold; animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* جدول الترتيب */
+        table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 15px; overflow: hidden; margin-top: 10px; }
+        th, td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { background: rgba(0,0,0,0.2); color: var(--accent); }
+        .highlight { background: rgba(0, 212, 255, 0.05); font-weight: bold; }
+
+        footer { text-align: center; padding: 30px; opacity: 0.5; font-size: 0.8rem; }
+
+        /* إخفاء الأقسام */
+        .page { display: none; }
+        .page.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div style="color: var(--accent); font-size: 2rem; margin-bottom: 40px;"><i class="fas fa-futbol"></i></div>
+        <div class="nav-link active" onclick="showPage('home', this)"><i class="fas fa-home"></i></div>
+        <div class="nav-link" onclick="showPage('live', this)"><i class="fas fa-broadcast-tower"></i></div>
+        <div class="nav-link" onclick="showPage('standings', this)"><i class="fas fa-list-ol"></i></div>
+    </aside>
+
+    <main>
+        <header>
+            <div>
+                <h2 style="font-size: 1rem; color: var(--accent);">الأربعاء، 1 نيسان 2026</h2>
+                <p style="font-size: 0.8rem;">مرحباً بك في Football Pro MAX</p>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="بحث سريع...">
+            </div>
+        </header>
+
+        <div class="container">
+            <div id="home" class="page active">
+                <div class="section-title">نتائج الأمس (31 مارس 2026)</div>
+                <div class="match-card">
+                    <div class="team">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/125px-Flag_of_Iraq.svg.png">
+                        <p>منتخب العراق</p>
                     </div>
-                    <div class="score-area" style="text-align: center;">
-                        <div class="score" style="font-size: 1.8rem; font-weight: 900; color: #00d4ff;">${m.score}</div>
-                        <div class="status" style="font-size: 0.8rem; color: #ff4b2b;">
-                            ${m.status.includes('مباشر') ? '<span class="live-pulse"></span>' : ''} ${m.status}
-                        </div>
+                    <div class="score-box">
+                        <div class="score-num">2 - 1</div>
+                        <div style="color: var(--accent); font-size: 0.8rem;">انتهت</div>
                     </div>
-                    <div class="team" style="text-align: center;">
-                        <img src="${m.logoA}" style="width: 50px; height: 50px; object-fit: contain;">
-                        <p style="font-weight: bold; margin-top: 5px;">${m.away}</p>
+                    <div class="team">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/125px-Flag_of_Bolivia.svg.png">
+                        <p>منتخب بوليفيا</p>
+                    </div>
+                </div>
+
+                <div class="section-title">مباريات القمة (الليلة)</div>
+                <div class="match-card">
+                    <div class="team">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png">
+                        <p>ريال مدريد</p>
+                    </div>
+                    <div class="score-box">
+                        <div class="score-num">VS</div>
+                        <div class="live-tag">22:00</div>
+                    </div>
+                    <div class="team">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png">
+                        <p>مانشستر سيتي</p>
                     </div>
                 </div>
             </div>
-        `).join('');
-    }
 
-    // تشغيل الدالة عند تحميل الصفحة
-    window.onload = renderMatches;
-</script>
+            <div id="live" class="page">
+                <div class="section-title">النتائج المباشرة</div>
+                <div id="live-content">
+                    </div>
+            </div>
 
-<style>
-    /* إضافة تأثير النبض للمباريات المباشرة */
-    .live-pulse {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        background: #ff4b2b;
-        border-radius: 50%;
-        margin-left: 5px;
-        animation: pulse 1s infinite;
-    }
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.3; }
-        100% { opacity: 1; }
-    }
-</style>
+            <div id="standings" class="page">
+                <div class="section-title">ترتيب الدوري الإسباني 2026</div>
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>الفريق</th><th>لعب</th><th>نقاط</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight"><td>1</td><td>ريال مدريد</td><td>29</td><td>75</td></tr>
+                        <tr><td>2</td><td>برشلونة</td><td>29</td><td>68</td></tr>
+                        <tr><td>3</td><td>أتلتيكو مدريد</td><td>29</td><td>62</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 Football Pro MAX - تم التطوير بواسطة Hayder98</p>
+        </footer>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script>
+        // إعدادات Firebase الخاصة بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyAi54sRTeJS_RhcAWJqlYAC95v4ZuQ0kGQ",
+            authDomain: "football-pro-max.firebaseapp.com",
+            projectId: "football-pro-max",
+            storageBucket: "football-pro-max.firebasestorage.app",
+            appId: "1:314060630253:web:6619cd79f92f335f8284e4"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // وظيفة التنقل
+        function showPage(pageId, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            el.classList.add('active');
+        }
+
+        // بيانات تجريبية حية لضمان عدم وجود صفحة بيضاء
+        const liveData = [
+            { h: "بايرن ميونخ", a: "برشلونة", s: "0 - 0", t: "22:00", lh: "https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/1200px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png", la: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_logo.svg/1200px-FC_Barcelona_logo.svg.png" }
+        ];
+
+        window.onload = () => {
+            const container = document.getElementById('live-content');
+            container.innerHTML = liveData.map(m => `
+                <div class="match-card">
+                    <div class="team"><img src="${m.lh}"><p>${m.h}</p></div>
+                    <div class="score-box"><div class="score-num">${m.s}</div><div>${m.t}</div></div>
+                    <div class="team"><img src="${m.la}"><p>${m.a}</p></div>
+                </div>
+            `).join('');
+        };
+    </script>
+</body>
+</html>
