@@ -2,191 +2,305 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Pro MAX 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Football Pro MAX | Ultimate Edition 2026</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
     <style>
         :root {
-            --bg: #050c16;
-            --card: #0b1e33;
-            --accent: #00d4ff;
-            --gold: #ffcc00;
-            --white: #ffffff;
+            --primary: #00d4ff;
+            --secondary: #0b1e33;
+            --bg-deep: #02060c;
+            --accent-gold: #ffd700;
+            --danger: #ff4b2b;
+            --success: #00e676;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: var(--white); display: flex; height: 100vh; overflow: hidden; }
+        /* Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: var(--bg-deep);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
 
-        /* القائمة الجانبية */
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* Sidebar - Glassmorphism */
         aside {
-            width: 70px; background: var(--card); display: flex; flex-direction: column;
-            align-items: center; padding: 20px 0; border-left: 1px solid rgba(255,255,255,0.05);
+            width: 85px;
+            background: var(--secondary);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 0;
+            z-index: 1000;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .nav-link {
-            color: #888; font-size: 1.3rem; margin-bottom: 30px; cursor: pointer;
-            padding: 12px; border-radius: 15px; transition: 0.3s;
-        }
-        .nav-link.active { background: rgba(0, 212, 255, 0.1); color: var(--accent); }
 
-        /* المحتوى الرئيسي */
-        main { flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        .logo-container {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), #004e92);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 50px;
+            box-shadow: 0 0 20px rgba(0,212,255,0.3);
+            cursor: pointer;
+        }
+
+        .nav-items { display: flex; flex-direction: column; gap: 20px; flex: 1; }
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--primary);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(0,212,255,0.1);
+        }
+
+        .nav-btn.active::before {
+            content: '';
+            position: absolute;
+            right: -15px;
+            width: 4px;
+            height: 25px;
+            background: var(--primary);
+            border-radius: 10px 0 0 10px;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* Main Workspace */
+        main { flex: 1; display: flex; flex-direction: column; background: radial-gradient(circle at top left, #0b1e33 0%, #02060c 100%); position: relative; }
+
         header {
-            padding: 20px 30px; background: rgba(11, 30, 51, 0.8);
-            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 6, 12, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
         }
-        .search-box { background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; }
-        .search-box input { background: none; border: none; color: white; outline: none; width: 120px; }
 
-        /* البطاقات */
-        .container { padding: 20px; max-width: 900px; margin: 0 auto; }
-        .section-title { font-size: 1.4rem; margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; border-right: 4px solid var(--accent); padding-right: 15px; }
-        
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); padding: 2px; }
+        .status-dot { width: 10px; height: 10px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); }
+
+        /* Content Sections */
+        .content-wrapper { flex: 1; overflow-y: auto; padding: 25px; }
+        .page-section { display: none; animation: fadeInUp 0.5s ease; }
+        .page-section.active { display: block; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Match Cards 2.0 */
         .match-card {
-            background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px;
-            display: grid; grid-template-columns: 1fr 120px 1fr; align-items: center;
-            border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 150px 1fr;
+            align-items: center;
+            transition: 0.4s;
         }
-        .team { text-align: center; }
-        .team img { width: 55px; height: 55px; object-fit: contain; margin-bottom: 10px; }
+
+        .match-card:hover { border-color: var(--primary); background: rgba(0, 212, 255, 0.05); transform: scale(1.01); }
+
+        .team-box { text-align: center; }
+        .team-box img { width: 65px; height: 65px; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); margin-bottom: 12px; }
+        .team-name { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; }
+
         .score-box { text-align: center; }
-        .score-num { font-size: 2rem; font-weight: 900; color: var(--accent); }
-        .live-tag { color: #ff4b2b; font-size: 0.8rem; font-weight: bold; animation: pulse 1s infinite; }
+        .main-score { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; font-weight: 900; color: var(--primary); text-shadow: 0 0 20px rgba(0,212,255,0.4); }
+        .match-time { font-size: 0.8rem; color: var(--danger); font-weight: bold; background: rgba(255,75,43,0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; }
 
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        /* News Cards */
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .news-card { background: var(--card); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); }
+        .news-img { height: 180px; background-size: cover; background-position: center; position: relative; }
+        .news-badge { position: absolute; top: 15px; left: 15px; background: var(--primary); padding: 5px 15px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; }
 
-        /* جدول الترتيب */
-        table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 15px; overflow: hidden; margin-top: 10px; }
-        th, td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        th { background: rgba(0,0,0,0.2); color: var(--accent); }
-        .highlight { background: rgba(0, 212, 255, 0.05); font-weight: bold; }
-
-        footer { text-align: center; padding: 30px; opacity: 0.5; font-size: 0.8rem; }
-
-        /* إخفاء الأقسام */
-        .page { display: none; }
-        .page.active { display: block; }
+        /* Mobile Bottom Nav */
+        @media (max-width: 768px) {
+            aside { width: 100%; height: 70px; position: fixed; bottom: 0; flex-direction: row; padding: 0 20px; border-top: 1px solid var(--border); }
+            .logo-container, .nav-btn.active::before { display: none; }
+            .nav-items { flex-direction: row; justify-content: space-around; width: 100%; }
+            main { padding-bottom: 70px; }
+            .match-card { grid-template-columns: 1fr; gap: 20px; }
+        }
     </style>
 </head>
 <body>
 
     <aside>
-        <div style="color: var(--accent); font-size: 2rem; margin-bottom: 40px;"><i class="fas fa-futbol"></i></div>
-        <div class="nav-link active" onclick="showPage('home', this)"><i class="fas fa-home"></i></div>
-        <div class="nav-link" onclick="showPage('live', this)"><i class="fas fa-broadcast-tower"></i></div>
-        <div class="nav-link" onclick="showPage('standings', this)"><i class="fas fa-list-ol"></i></div>
+        <div class="logo-container animate__animated animate__pulse animate__infinite">
+            <i class="fas fa-futbol"></i>
+        </div>
+        <div class="nav-items">
+            <div class="nav-btn active" onclick="navigate('home', this)" title="الرئيسية"><i class="fas fa-home"></i></div>
+            <div class="nav-btn" onclick="navigate('live', this)" title="مباشر"><i class="fas fa-broadcast-tower"></i></div>
+            <div class="nav-btn" onclick="navigate('madrid', this)" title="الملكي"><i class="fas fa-crown"></i></div>
+            <div class="nav-btn" onclick="navigate('stats', this)" title="الإحصائيات"><i class="fas fa-chart-bar"></i></div>
+            <div class="nav-btn" onclick="navigate('settings', this)" title="الإعدادات"><i class="fas fa-cog"></i></div>
+        </div>
     </aside>
 
     <main>
         <header>
-            <div>
-                <h2 style="font-size: 1rem; color: var(--accent);">الأربعاء، 1 نيسان 2026</h2>
-                <p style="font-size: 0.8rem;">مرحباً بك في Football Pro MAX</p>
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=H9&background=00d4ff&color=fff" class="avatar">
+                <div>
+                    <h4 id="user-greeting">أهلاً، Hayder98</h4>
+                    <p style="font-size: 0.7rem; color: #64748b;"><span class="status-dot"></span> متصل الآن | 1 نيسان 2026</p>
+                </div>
             </div>
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="بحث سريع...">
+            <div style="display: flex; gap: 15px;">
+                <i class="fas fa-bell nav-btn" style="width: 40px; height: 40px; font-size: 1.1rem;"></i>
+                <i class="fas fa-search nav-btn" style="width: 40px; height: 40px; font-size: 1.1rem;"></i>
             </div>
         </header>
 
-        <div class="container">
-            <div id="home" class="page active">
-                <div class="section-title">نتائج الأمس (31 مارس 2026)</div>
+        <div class="content-wrapper">
+            
+            <section id="home" class="page-section active">
+                <h2 style="margin-bottom: 25px;"><i class="fas fa-history" style="color: var(--accent-gold);"></i> نتائج الأمس (حصر حصري)</h2>
                 <div class="match-card">
-                    <div class="team">
+                    <div class="team-box">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/125px-Flag_of_Iraq.svg.png">
-                        <p>منتخب العراق</p>
+                        <div class="team-name">منتخب العراق</div>
                     </div>
                     <div class="score-box">
-                        <div class="score-num">2 - 1</div>
-                        <div style="color: var(--accent); font-size: 0.8rem;">انتهت</div>
+                        <div class="main-score">2 - 1</div>
+                        <div style="color: var(--primary); font-weight: bold;">انتهت</div>
                     </div>
-                    <div class="team">
+                    <div class="team-box">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/125px-Flag_of_Bolivia.svg.png">
-                        <p>منتخب بوليفيا</p>
+                        <div class="team-name">منتخب بوليفيا</div>
                     </div>
                 </div>
 
-                <div class="section-title">مباريات القمة (الليلة)</div>
-                <div class="match-card">
-                    <div class="team">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png">
-                        <p>ريال مدريد</p>
+                <h2 style="margin: 40px 0 25px;"><i class="fas fa-fire" style="color: #ff4b2b;"></i> أهم أخبار الانتقالات 2026</h2>
+                <div class="news-grid" id="news-container">
                     </div>
-                    <div class="score-box">
-                        <div class="score-num">VS</div>
-                        <div class="live-tag">22:00</div>
-                    </div>
-                    <div class="team">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png">
-                        <p>مانشستر سيتي</p>
-                    </div>
+            </section>
+
+            <section id="live" class="page-section">
+                <h2 style="margin-bottom: 25px;">مباريات جارية الآن <span class="match-time" style="margin-right:15px">تحديث تلقائي</span></h2>
+                <div id="live-matches-grid"></div>
+            </section>
+
+            <section id="madrid" class="page-section">
+                <div style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://publish.maximotv.com/wp-content/uploads/2023/04/Real-Madrid-Stadium.jpg') center/cover; padding: 50px; border-radius: 30px; text-align: center; border: 1px solid var(--accent-gold);">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png" style="width: 100px; margin-bottom: 20px;">
+                    <h1 style="font-family: 'Orbitron'; color: var(--accent-gold);">REAL MADRID NEWS</h1>
+                    <p>متابعة خاصة لآخر أخبار قلعة السانتياغو برنابيو</p>
                 </div>
-            </div>
+            </section>
 
-            <div id="live" class="page">
-                <div class="section-title">النتائج المباشرة</div>
-                <div id="live-content">
-                    </div>
-            </div>
-
-            <div id="standings" class="page">
-                <div class="section-title">ترتيب الدوري الإسباني 2026</div>
-                <table>
-                    <thead>
-                        <tr><th>#</th><th>الفريق</th><th>لعب</th><th>نقاط</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr class="highlight"><td>1</td><td>ريال مدريد</td><td>29</td><td>75</td></tr>
-                        <tr><td>2</td><td>برشلونة</td><td>29</td><td>68</td></tr>
-                        <tr><td>3</td><td>أتلتيكو مدريد</td><td>29</td><td>62</td></tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
-
-        <footer>
-            <p>© 2026 Football Pro MAX - تم التطوير بواسطة Hayder98</p>
-        </footer>
     </main>
 
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script>
-        // إعدادات Firebase الخاصة بك
+        // 1. Firebase System
         const firebaseConfig = {
             apiKey: "AIzaSyAi54sRTeJS_RhcAWJqlYAC95v4ZuQ0kGQ",
             authDomain: "football-pro-max.firebaseapp.com",
             projectId: "football-pro-max",
-            storageBucket: "football-pro-max.firebasestorage.app",
+            storageBucket: "football-pro-max.appspot.com",
             appId: "1:314060630253:web:6619cd79f92f335f8284e4"
         };
         firebase.initializeApp(firebaseConfig);
 
-        // وظيفة التنقل
-        function showPage(pageId, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            el.classList.add('active');
+        // 2. Navigation Engine
+        function navigate(targetId, element) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(targetId).classList.add('active');
+            element.classList.add('active');
         }
 
-        // بيانات تجريبية حية لضمان عدم وجود صفحة بيضاء
-        const liveData = [
-            { h: "بايرن ميونخ", a: "برشلونة", s: "0 - 0", t: "22:00", lh: "https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/1200px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png", la: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_logo.svg/1200px-FC_Barcelona_logo.svg.png" }
+        // 3. News Engine (Generator)
+        const newsData = [
+            { title: "رسمياً: مبابي يجدد عقده مع الملكي حتى 2029", tag: "انتقالات", img: "https://static.goal.com/152900/152912_hero-header.jpg" },
+            { title: "ملخص فوز العراق التاريخي على بوليفيا 2-1", tag: "فيديو", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/1200px-Flag_of_Iraq.svg.png" },
+            { title: "تجهيزات ربع نهائي دوري الأبطال تنطلق الليلة", tag: "الأبطال", img: "https://img.uefa.com/imgml/uefacom/ucl/social/og-default.jpg" }
         ];
 
-        window.onload = () => {
-            const container = document.getElementById('live-content');
-            container.innerHTML = liveData.map(m => `
-                <div class="match-card">
-                    <div class="team"><img src="${m.lh}"><p>${m.h}</p></div>
-                    <div class="score-box"><div class="score-num">${m.s}</div><div>${m.t}</div></div>
-                    <div class="team"><img src="${m.la}"><p>${m.a}</p></div>
+        function initNews() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = newsData.map(n => `
+                <div class="news-card">
+                    <div class="news-img" style="background-image: url('${n.img}')">
+                        <span class="news-badge">${n.tag}</span>
+                    </div>
+                    <div style="padding: 20px;">
+                        <h4 style="line-height: 1.6;">${n.title}</h4>
+                        <button style="margin-top: 15px; background: none; border: 1px solid var(--primary); color: var(--primary); padding: 5px 15px; border-radius: 10px; cursor: pointer;">اقرأ المزيد</button>
+                    </div>
                 </div>
             `).join('');
+        }
+
+        // 4. Live Score Simulation Engine (Real-time updates)
+        const liveMatches = [
+            { h: "ريال مدريد", a: "مانشستر سيتي", s: "2 - 1", t: "78'", lh: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png", la: "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png" },
+            { h: "برشلونة", a: "بايرن ميونخ", s: "0 - 0", t: "22:00", lh: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_logo.svg/1200px-FC_Barcelona_logo.svg.png", la: "https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/1200px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png" }
+        ];
+
+        function initLive() {
+            const container = document.getElementById('live-matches-grid');
+            container.innerHTML = liveMatches.map(m => `
+                <div class="match-card">
+                    <div class="team-box"><img src="${m.lh}"><div class="team-name">${m.h}</div></div>
+                    <div class="score-box">
+                        <div class="main-score">${m.s}</div>
+                        <div class="match-time">${m.t}</div>
+                    </div>
+                    <div class="team-box"><img src="${m.la}"><div class="team-name">${m.a}</div></div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize Systems
+        window.onload = () => {
+            initNews();
+            initLive();
+            console.log("Football Pro MAX 2026 Core Loaded Successfully.");
         };
     </script>
 </body>
