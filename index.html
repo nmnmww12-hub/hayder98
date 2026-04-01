@@ -7,137 +7,134 @@
 
 <style>
 body{
-margin:0;
-font-family:Arial;
-background:#0b1a2f;
-color:white;
+    margin:0;
+    font-family:Arial;
+    background:#0b1c2c;
+    color:white;
 }
-
 header{
-text-align:center;
-padding:15px;
-font-size:22px;
-font-weight:bold;
+    text-align:center;
+    padding:20px;
+    font-size:26px;
+    font-weight:bold;
 }
-
 .buttons{
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:20px;
 }
-
 button{
-background:#2e5bff;
-border:none;
-padding:10px;
-border-radius:10px;
-color:white;
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    background:#2d6cdf;
+    color:white;
+    cursor:pointer;
 }
-
-.container{
-padding:10px;
-}
-
 .card{
-background:#1e2b45;
-margin:10px 0;
-padding:15px;
-border-radius:15px;
+    background:#16283d;
+    margin:10px;
+    padding:15px;
+    border-radius:15px;
 }
-
 .team{
-display:flex;
-justify-content:space-between;
-font-size:18px;
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #333;
 }
-
-.table td{
-padding:8px;
-border-bottom:1px solid #333;
-}
-
 </style>
-</head>
 
+</head>
 <body>
 
 <header>⚽ Football Pro MAX</header>
 
 <div class="buttons">
-<button onclick="matches()">🔴 مباريات</button>
-<button onclick="table()">📊 الترتيب</button>
-<button onclick="news()">📰 أخبار</button>
+    <button onclick="showMatches()">🔴 مباريات</button>
+    <button onclick="showTable()">📊 الترتيب</button>
+    <button onclick="showNews()">📰 أخبار</button>
 </div>
 
-<div class="container" id="app"></div>
+<div id="content"></div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAi54sRTeJS_RhcAWJqlYAC95v4ZuQ0kGQ",
+  authDomain: "football-pro-max.firebaseapp.com",
+  projectId: "football-pro-max",
+  storageBucket: "football-pro-max.firebasestorage.app",
+  messagingSenderId: "314060630253",
+  appId: "1:314060630253:web:6619cd79f92f335f8284e4",
+  measurementId: "G-H952BJJGXV"
+};
+
+const app = initializeApp(firebaseConfig);
+getAnalytics(app);
+</script>
 
 <script>
+const content = document.getElementById("content");
 
-// ⚽ بيانات ديناميكية (تتغير)
-let teams = [
-"ريال مدريد","برشلونة","أتلتيكو مدريد","فياريال",
-"ريال بيتيس","سيلتا فيغو","أوساسونا","خيتافي"
-];
-
-// 🔴 مباريات
-function matches(){
-let html = "";
-
-for(let i=0;i<3;i++){
-let t1 = teams[Math.floor(Math.random()*teams.length)];
-let t2 = teams[Math.floor(Math.random()*teams.length)];
-
-html += `
-<div class="card">
-<div class="team">
-<span>${t1}</span>
-<span>VS</span>
-<span>${t2}</span>
-</div>
-<p>⏰ ${Math.floor(Math.random()*12)+1}:00</p>
-<p>📊 ${Math.floor(Math.random()*5)} - ${Math.floor(Math.random()*5)}</p>
-</div>
-`;
+function showMatches(){
+    content.innerHTML = `
+    <div class="card">
+        <h3>🔥 مباريات اليوم</h3>
+        <p>ريال مدريد vs برشلونة</p>
+        <p>مانشستر سيتي vs ليفربول</p>
+        <p>بايرن ميونخ vs دورتموند</p>
+    </div>
+    `;
 }
 
-document.getElementById("app").innerHTML = html;
+async function showTable(){
+    content.innerHTML = `<div class="card">جاري تحميل الترتيب...</div>`;
+
+    try{
+        let res = await fetch("https://api.football-data.org/v4/competitions/PD/standings",{
+            headers: { "X-Auth-Token": "d4fe6e8b047d4453bb041a8f90f7c8fd" }
+        });
+
+        let data = await res.json();
+
+        let teams = data.standings[0].table;
+
+        let html = `<div class="card"><h3>🇪🇸 ترتيب الدوري الإسباني</h3>`;
+
+        teams.forEach(t=>{
+            html += `
+            <div class="team">
+                <span>${t.position}. ${t.team.name}</span>
+                <span>${t.points} نقطة</span>
+            </div>
+            `;
+        });
+
+        html += `</div>`;
+        content.innerHTML = html;
+
+    }catch(e){
+        content.innerHTML = `<div class="card">❌ فشل تحميل الترتيب</div>`;
+    }
 }
 
-// 📊 ترتيب
-function table(){
-let html = `<div class="card"><h3>🇪🇸 الدوري الإسباني</h3><table width="100%">`;
-
-teams.forEach((team,i)=>{
-html += `<tr><td>${i+1}</td><td>${team}</td><td>${Math.floor(Math.random()*80)}</td></tr>`;
-});
-
-html += `</table></div>`;
-
-document.getElementById("app").innerHTML = html;
+function showNews(){
+    content.innerHTML = `
+    <div class="card">
+        <h3>📰 أخبار</h3>
+        <p>🔥 ريال مدريد يستعد لمباراة قوية</p>
+        <p>⚡ برشلونة يعلن صفقة جديدة</p>
+        <p>🏆 صراع الصدارة يشتعل في الليغا</p>
+    </div>
+    `;
 }
 
-// 📰 أخبار
-function news(){
-document.getElementById("app").innerHTML = `
-<div class="card">
-<h3>🔥 خبر عاجل</h3>
-<p>ريال مدريد يفوز ويواصل الصدارة!</p>
-</div>
-
-<div class="card">
-<h3>⚽ برشلونة</h3>
-<p>برشلونة يقدم أداء قوي هذا الموسم.</p>
-</div>
-`;
-}
-
-// تشغيل
-matches();
-
-// تحديث تلقائي كل 10 ثواني
-setInterval(matches,10000);
-
+showMatches();
 </script>
 
 </body>
