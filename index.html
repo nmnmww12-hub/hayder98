@@ -1,116 +1,30 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Football Pro MAX</title>
-
-<style>
-body{
-    margin:0;
-    font-family:Arial;
-    background:#0b1c2c;
-    color:white;
-}
-header{
-    text-align:center;
-    padding:20px;
-    font-size:26px;
-    font-weight:bold;
-}
-.buttons{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-bottom:20px;
-}
-button{
-    padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    background:#2d6cdf;
-    color:white;
-    cursor:pointer;
-}
-.card{
-    background:#16283d;
-    margin:10px;
-    padding:15px;
-    border-radius:15px;
-}
-.team{
-    display:flex;
-    justify-content:space-between;
-    padding:8px 0;
-    border-bottom:1px solid #333;
-}
-</style>
-
-</head>
-<body>
-
-<header>⚽ Football Pro MAX</header>
-
-<div class="buttons">
-    <button onclick="showMatches()">🔴 مباريات</button>
-    <button onclick="showTable()">📊 الترتيب</button>
-    <button onclick="showNews()">📰 أخبار</button>
-</div>
-
-<div id="content"></div>
-
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAi54sRTeJS_RhcAWJqlYAC95v4ZuQ0kGQ",
-  authDomain: "football-pro-max.firebaseapp.com",
-  projectId: "football-pro-max",
-  storageBucket: "football-pro-max.firebasestorage.app",
-  messagingSenderId: "314060630253",
-  appId: "1:314060630253:web:6619cd79f92f335f8284e4",
-  measurementId: "G-H952BJJGXV"
-};
-
-const app = initializeApp(firebaseConfig);
-getAnalytics(app);
-</script>
-
-<script>
-const content = document.getElementById("content");
-
-function showMatches(){
-    content.innerHTML = `
-    <div class="card">
-        <h3>🔥 مباريات اليوم</h3>
-        <p>ريال مدريد vs برشلونة</p>
-        <p>مانشستر سيتي vs ليفربول</p>
-        <p>بايرن ميونخ vs دورتموند</p>
-    </div>
-    `;
-}
-
 async function showTable(){
-    content.innerHTML = `<div class="card">جاري تحميل الترتيب...</div>`;
+    content.innerHTML = `<div class="card">⏳ جاري تحميل الترتيب...</div>`;
 
     try{
-        let res = await fetch("https://api.football-data.org/v4/competitions/PD/standings",{
-            headers: { "X-Auth-Token": "d4fe6e8b047d4453bb041a8f90f7c8fd" }
+        const url = "https://corsproxy.io/?https://api.football-data.org/v4/competitions/PD/standings";
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "X-Auth-Token": "d4fe6e8b047d4453bb041a8f90f7c8fd"
+            }
         });
 
-        let data = await res.json();
+        if(!response.ok){
+            throw new Error("API ERROR: " + response.status);
+        }
 
-        let teams = data.standings[0].table;
+        const data = await response.json();
+        const teams = data.standings[0].table;
 
         let html = `<div class="card"><h3>🇪🇸 ترتيب الدوري الإسباني</h3>`;
 
-        teams.forEach(t=>{
+        teams.forEach(team => {
             html += `
             <div class="team">
-                <span>${t.position}. ${t.team.name}</span>
-                <span>${t.points} نقطة</span>
+                <span>${team.position}. ${team.team.name}</span>
+                <span>${team.points} نقطة</span>
             </div>
             `;
         });
@@ -118,24 +32,13 @@ async function showTable(){
         html += `</div>`;
         content.innerHTML = html;
 
-    }catch(e){
-        content.innerHTML = `<div class="card">❌ فشل تحميل الترتيب</div>`;
+    }catch(error){
+        console.log(error);
+
+        content.innerHTML = `
+        <div class="card">
+            ❌ فشل تحميل الترتيب<br>
+            🔍 ${error.message}
+        </div>`;
     }
 }
-
-function showNews(){
-    content.innerHTML = `
-    <div class="card">
-        <h3>📰 أخبار</h3>
-        <p>🔥 ريال مدريد يستعد لمباراة قوية</p>
-        <p>⚡ برشلونة يعلن صفقة جديدة</p>
-        <p>🏆 صراع الصدارة يشتعل في الليغا</p>
-    </div>
-    `;
-}
-
-showMatches();
-</script>
-
-</body>
-</html>
