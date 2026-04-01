@@ -1,91 +1,268 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>Football Pro MAX</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Pro MAX | احترافية كرة القدم</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<style>
-body {
-  background: #0b1e33;
-  color: white;
-  font-family: Arial;
-  text-align: center;
-}
+    <style>
+        :root {
+            --primary-bg: #0b1e33;
+            --secondary-bg: #152c4a;
+            --accent-color: #00d4ff;
+            --text-white: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
 
-h1 {
-  margin-top: 20px;
-}
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-white);
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
-.buttons button {
-  margin: 10px;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  background: #2d6cdf;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
+        /* Header Area */
+        header {
+            background: linear-gradient(180deg, #1a3a5f 0%, var(--primary-bg) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
 
-.card {
-  background: #162b45;
-  margin: 20px;
-  padding: 20px;
-  border-radius: 15px;
-}
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-.error {
-  color: red;
-}
-</style>
+        .status-bar {
+            background: var(--secondary-bg);
+            padding: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .section-title {
+            border-right: 4px solid var(--accent-color);
+            padding-right: 15px;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* Match Card Styling */
+        .matches-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .match-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .match-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .team {
+            flex: 1;
+            text-align: center;
+        }
+
+        .team img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+            object-fit: contain;
+        }
+
+        .match-info {
+            flex: 1;
+            text-align: center;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            margin: 0 15px;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .match-time {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .live-tag {
+            background: #ff4b2b;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* Loading Spinner */
+        #loader {
+            text-align: center;
+            padding: 50px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+    </style>
 </head>
-
 <body>
 
-<h1>⚽ Football Pro MAX</h1>
+<header>
+    <h1>⚽ Football Pro MAX</h1>
+    <p>تغطية مباشرة لمباريات اليوم 2026</p>
+</header>
 
-<div class="buttons">
-  <button onclick="showTable()">📊 الترتيب</button>
+<div class="status-bar">
+    <span><i class="fas fa-calendar-day"></i> الأربعاء، 1 أبريل 2026</span>
+    <span><i class="fas fa-circle" style="color: #00ff00;"></i> المتصلين: 1,420</span>
 </div>
 
-<div id="content" class="card">
-اضغط على "الترتيب"
+<div class="container">
+    <div class="section-title">نتائج الأمس (31 مارس 2026)</div>
+    <div class="matches-grid">
+        <div class="match-card">
+            <div class="team">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/125px-Flag_of_Iraq.svg.png" alt="العراق">
+                <div>منتخب العراق</div>
+            </div>
+            <div class="match-info">
+                <div class="score">2 - 1</div>
+                <div class="match-time">انتهت</div>
+            </div>
+            <div class="team">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/125px-Flag_of_Bolivia.svg.png" alt="بوليفيا">
+                <div>منتخب بوليفيا</div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="section-title">مباريات اليوم المباشرة</div>
+    <div id="loader"><i class="fas fa-spinner fa-spin fa-2x"></i> جاري تحديث البيانات...</div>
+    <div id="matches-container" class="matches-grid"></div>
 </div>
+
+<footer>
+    &copy; 2026 Football Pro MAX - جميع الحقوق محفوظة لـ Hayder98
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics-compat.js"></script>
 
 <script>
-async function showTable() {
-  const content = document.getElementById("content");
-  content.innerHTML = "⏳ جاري التحميل...";
+    // إعدادات Firebase الخاصة بك التي ظهرت في الصورة
+    const firebaseConfig = {
+        apiKey: "AIzaSyAi54sRTeJS_RhcAWJqlYAC95v4ZuQ0kGQ",
+        authDomain: "football-pro-max.firebaseapp.com",
+        projectId: "football-pro-max",
+        storageBucket: "football-pro-max.appspot.com",
+        messagingSenderId: "314060630253",
+        appId: "1:314060630253:web:6619cd79f92f335f8284e4",
+        measurementId: "G-H952BJJGXV"
+    };
 
-  try {
-    const response = await fetch("https://api.allorigins.win/raw?url=https://api.football-data.org/v4/competitions/PD/standings", {
-      headers: {
-        "X-Auth-Token": "d4fe6e8b047d4453bb041a8f90f7c8fd"
-      }
-    });
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
 
-    if (!response.ok) {
-      throw new Error("خطأ: " + response.status);
+    // جلب البيانات من Football-Data.org
+    // ملاحظة: ضع مفتاح الـ API الخاص بك هنا
+    const API_KEY = 'ضع_مفتاح_API_الخاص_بك_هنا'; 
+    const matchesContainer = document.getElementById('matches-container');
+    const loader = document.getElementById('loader');
+
+    async function fetchMatches() {
+        try {
+            // سنقوم بجلب مباريات البطولات الكبرى المتاحة في الخدمة المجانية
+            const response = await fetch('https://api.football-data.org/v4/matches', {
+                headers: { 'X-Auth-Token': API_KEY }
+            });
+            const data = await response.json();
+            
+            loader.style.display = 'none';
+            displayMatches(data.matches);
+        } catch (error) {
+            console.error("خطأ في جلب البيانات:", error);
+            loader.innerHTML = "يرجى إضافة مفتاح API الخاص بك لتفعيل المباريات المباشرة.";
+        }
     }
 
-    const data = await response.json();
-    const teams = data.standings[0].table;
+    function displayMatches(matches) {
+        if (!matches || matches.length === 0) {
+            matchesContainer.innerHTML = "<p>لا توجد مباريات حالية في هذه اللحظة.</p>";
+            return;
+        }
 
-    let html = "<h2>🏆 ترتيب الدوري الإسباني</h2>";
+        matches.forEach(match => {
+            const card = document.createElement('div');
+            card.className = 'match-card';
+            
+            const isLive = match.status === 'IN_PLAY';
+            
+            card.innerHTML = `
+                <div class="team">
+                    <img src="${match.homeTeam.crest}" onerror="this.src='https://via.placeholder.com/50'" alt="${match.homeTeam.name}">
+                    <div>${match.homeTeam.shortName || match.homeTeam.name}</div>
+                </div>
+                <div class="match-info">
+                    ${isLive ? '<span class="live-tag">مباشر</span>' : ''}
+                    <div class="score">${match.score.fullTime.home ?? 0} - ${match.score.fullTime.away ?? 0}</div>
+                    <div class="match-time">${new Date(match.utcDate).toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})}</div>
+                </div>
+                <div class="team">
+                    <img src="${match.awayTeam.crest}" onerror="this.src='https://via.placeholder.com/50'" alt="${match.awayTeam.name}">
+                    <div>${match.awayTeam.shortName || match.awayTeam.name}</div>
+                </div>
+            `;
+            matchesContainer.appendChild(card);
+        });
+    }
 
-    teams.forEach(team => {
-      html += `
-        <p>${team.position} - ${team.team.name} (${team.points} نقطة)</p>
-      `;
-    });
-
-    content.innerHTML = html;
-
-  } catch (error) {
-    console.log(error);
-    content.innerHTML = `<div class="error">❌ فشل تحميل الترتيب<br>${error.message}</div>`;
-  }
-}
+    // تشغيل الجلب عند التحميل
+    fetchMatches();
 </script>
 
 </body>
