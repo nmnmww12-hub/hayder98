@@ -14,9 +14,7 @@ color:white;
 text-align:center;
 }
 
-h1{
-padding:15px;
-}
+h1{padding:15px;}
 
 .buttons{
 display:flex;
@@ -42,14 +40,14 @@ padding:12px;
 border-radius:10px;
 border:none;
 margin:10px;
-font-size:16px;
 }
 
 .card{
 background:#1e293b;
-margin:15px;
-padding:10px;
+margin:10px;
+padding:15px;
 border-radius:15px;
+text-align:right;
 }
 
 iframe{
@@ -66,63 +64,99 @@ border-radius:10px;
 <h1>⚽ Football Pro MAX</h1>
 
 <div class="buttons">
-<button onclick="loadLive()">🔴 مباشر</button>
-<button onclick="loadYesterday()">📅 مباريات الأمس</button>
-<button onclick="loadVideos()">🎬 أهداف</button>
+<button onclick="today()">📅 اليوم</button>
+<button onclick="yesterday()">📅 الأمس</button>
+<button onclick="standings()">📊 الترتيب</button>
+<button onclick="videos()">🎬 أهداف</button>
 </div>
 
 <input type="text" id="search" placeholder="🔍 ابحث عن فريق..." onkeyup="searchTeam()">
 
-<div id="content"></div>
+<div id="content">⏳ جاري التحميل...</div>
 
 <script>
 
-// 🔴 مباشر (وهمي لكن شكله قوي)
-function loadLive(){
-document.getElementById("content").innerHTML = `
-<div class="card">
-<h3>🔥 مباريات مباشرة</h3>
-<p>لا يوجد بث حالياً 😅</p>
-</div>
-`;
+const KEY = "e861dd443e7485299d0ec782cb1e6de1"
+
+// 🔥 مهم (Proxy)
+const BASE = "https://corsproxy.io/?https://v3.football.api-sports.io";
+
+// 📅 اليوم
+async function today(){
+load("fixtures?date=2026-04-01");
 }
 
-// 📅 مباريات الأمس (مع العراق 🔥)
-function loadYesterday(){
-document.getElementById("content").innerHTML = `
-
-<div class="card">
-<h3>🇮🇶 العراق 🆚 بوليفيا 🇧🇴</h3>
-<p>🏆 تصفيات كأس العالم</p>
-<p>⏱ 90 دقيقة</p>
-<p>📊 2 - 1</p>
-</div>
-
-<div class="card">
-<h3>Mexico 🆚 Portugal</h3>
-<iframe src="https://www.youtube.com/embed/ysz5S6PUM-U"></iframe>
-</div>
-
-<div class="card">
-<h3>USA 🆚 Belgium</h3>
-<iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-</div>
-
-`;
+// 📅 الأمس
+async function yesterday(){
+load("fixtures?date=2026-03-31");
 }
 
-// 🎬 فيديوهات قوية
-function loadVideos(){
+// 📊 ترتيب
+async function standings(){
+
+let res = await fetch(BASE + "/standings?league=39&season=2024",{
+headers:{ "x-apisports-key": KEY }
+});
+
+let data = await res.json();
+
+let html = "";
+
+data.response[0].league.standings[0].forEach(t=>{
+
+html += `
+<div class="card">
+🏆 ${t.rank} - ${t.team.name}
+<br>📊 ${t.points} نقطة
+</div>
+`;
+
+});
+
+document.getElementById("content").innerHTML = html;
+}
+
+// ⚽ تحميل مباريات
+async function load(endpoint){
+
+document.getElementById("content").innerHTML = "⏳ جاري التحميل...";
+
+let res = await fetch(BASE + "/" + endpoint,{
+headers:{ "x-apisports-key": KEY }
+});
+
+let data = await res.json();
+
+let html = "";
+
+data.response.slice(0,20).forEach(m=>{
+
+html += `
+<div class="card">
+<h3>${m.teams.home.name} 🆚 ${m.teams.away.name}</h3>
+<p>🏆 ${m.league.name}</p>
+<p>⏱ ${m.fixture.status.elapsed || "لم تبدأ"}</p>
+<p>📊 ${m.goals.home ?? "-"} : ${m.goals.away ?? "-"}</p>
+</div>
+`;
+
+});
+
+document.getElementById("content").innerHTML = html;
+}
+
+// 🎬 أهداف
+function videos(){
 document.getElementById("content").innerHTML = `
 
 <div class="card">
-<h3>🔥 أفضل أهداف اليوم</h3>
+<h3>🔥 أهداف مباريات</h3>
 <iframe src="https://www.youtube.com/embed/3fumBcKC6RE"></iframe>
 </div>
 
 <div class="card">
-<h3>⚽ مهارات خرافية</h3>
-<iframe src="https://www.youtube.com/embed/L_jWHffIx5E"></iframe>
+<h3>⚽ ملخص مباريات</h3>
+<iframe src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
 </div>
 
 `;
@@ -134,16 +168,12 @@ let input = document.getElementById("search").value.toLowerCase();
 let cards = document.querySelectorAll(".card");
 
 cards.forEach(card=>{
-if(card.innerText.toLowerCase().includes(input)){
-card.style.display="block";
-}else{
-card.style.display="none";
-}
+card.style.display = card.innerText.toLowerCase().includes(input) ? "block" : "none";
 });
 }
 
 // تشغيل أولي
-loadYesterday();
+today();
 
 </script>
 
