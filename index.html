@@ -2,37 +2,73 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>🔥 مباريات اليوم</title>
+<title>⚽ مباريات اليوم بث مباشر</title>
 
 <style>
 body{background:#111;color:#fff;text-align:center;font-family:Arial}
-.box{background:#222;padding:15px;margin:20px;border-radius:10px}
-a{display:block;background:red;color:#fff;padding:15px;margin:20px;border-radius:10px;text-decoration:none}
+.match{background:#222;margin:15px;padding:15px;border-radius:10px}
+a.btn{
+display:inline-block;
+background:red;
+color:white;
+padding:10px 15px;
+margin-top:10px;
+border-radius:10px;
+text-decoration:none;
+}
 </style>
 
 </head>
 <body>
 
-<h1>⚽ بث مباشر مباريات اليوم</h1>
+<h1>🔥 مباريات اليوم بث مباشر</h1>
 
-<div class="box" id="timeBox">
-⏰ جاري التحديث...
-</div>
-
-<a href="#">▶️ مشاهدة المباراة الآن</a>
+<div id="matches">⏳ جاري تحميل...</div>
 
 <script>
-function updateTime() {
-    let now = new Date();
-    document.getElementById("timeBox").innerHTML =
-        "🔥 تحديث تلقائي<br>⏰ " + now.toLocaleString();
+const API_KEY = "PUT_YOUR_API_KEY_HERE";
+
+// 👇 رابط بوتك
+const WATCH_LINK = "https://t.me/HAYDER_GAME_bot";
+
+async function loadMatches() {
+    try {
+        const res = await fetch("https://v3.football.api-sports.io/fixtures?live=all", {
+            method: "GET",
+            headers: {
+                "x-apisports-key": API_KEY
+            }
+        });
+
+        const data = await res.json();
+        let html = "";
+
+        data.response.forEach(match => {
+            html += `
+            <div class="match">
+                ⚽ ${match.teams.home.name} vs ${match.teams.away.name}<br>
+                🕐 ${new Date(match.fixture.date).toLocaleString()}<br>
+
+                <a class="btn" href="${WATCH_LINK}" target="_blank">
+                ▶️ مشاهدة المباراة
+                </a>
+            </div>
+            `;
+        });
+
+        document.getElementById("matches").innerHTML =
+            html || "❌ لا توجد مباريات حالياً";
+
+    } catch (e) {
+        document.getElementById("matches").innerHTML = "❌ خطأ في جلب البيانات";
+    }
 }
 
-// أول تشغيل
-updateTime();
+// تشغيل أول مرة
+loadMatches();
 
 // تحديث كل دقيقة
-setInterval(updateTime, 60000);
+setInterval(loadMatches, 60000);
 </script>
 
 </body>
